@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - FitZone</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Estilos para mensajes de error */
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.1);
+            border-left: 4px solid #ff3333;
+            color: #fff;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.5s forwards;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .error-message .close-btn:hover {
+            opacity: 1;
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mejora visual para el botón de ir al inicio */
+        .home-button {
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .home-button:hover {
+            text-shadow: 0 0 5px #45f3ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo 3D Fitzone -->
+    <div class="logo-3d">
+        <span>F</span><span>I</span><span>T</span><span>Z</span><span>O</span><span>N</span><span>E</span>
+    </div>
+    
+    <!-- Elementos 3D de gimnasio (izquierda) -->
+    <div class="gym-elements left-elements">
+        <div class="element dumbbell"></div>
+        <div class="element weight-plate"></div>
+        <div class="element kettlebell"></div>
+        <div class="element protein-shake"></div>
+        <div class="element running"></div>
+    </div>
+    
+    <!-- Elementos 3D de gimnasio (derecha) -->
+    <div class="gym-elements right-elements">
+        <div class="element barbell"></div>
+        <div class="element yoga-mat"></div>
+        <div class="element stopwatch"></div>
+        <div class="element muscle"></div>
+        <div class="element gym-bag"></div>
+    </div>
+
+    <div class="box">
+    <span class="borderLine"></span>
+    <form id="loginForm"> <!-- ELIMINADO: th:action y method -->
+        <h2>Iniciar sesión</h2>
+
+        <!-- Sistema de mensajes de error mejorado -->
+        <div th:if="${error}" class="error-message">
+            <button type="button" class="close-btn">×</button>
+            <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${param.error}" class="error-message">
+            <button type="button" class="close-btn">×</button>
+            <span>Usuario o contraseña incorrectos</span>
+        </div>
+
+        <div th:if="${param.logout}" class="error-message" style="border-left-color: #4CAF50; background-color: rgba(76, 175, 80, 0.1);">
+            <button type="button" class="close-btn">×</button>
+            <span>Has cerrado sesión correctamente</span>
+        </div>
+
+        <div class="inputBox">
+            <input type="text" name="correo" required="required">
+            <span>Correo</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <!-- CORREGIDO: name="contrasena" en lugar de "contraseña" -->
+            <input type="password" name="contrasena" required="required">
+            <span>Contraseña</span>
+            <i></i>
+        </div>
+        <div class="links">
+            <a th:href="@{/restablecer}">¿Olvidaste tu contraseña?</a>
+            <a th:href="@{/registro}">Registrarse</a>
+        </div>
+        <input type="submit" value="Entrar">
+        <a th:href="@{/home}" class="home-button">Ir al Inicio</a>
+    </form>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const box = document.querySelector('.box');
+            const inputs = document.querySelectorAll('.inputBox');
+            const submitButton = document.querySelector('input[type="submit"]');
+            const logo3d = document.querySelector('.logo-3d');
+            const gymElements = document.querySelectorAll('.element');
+            const homeButton = document.querySelector('.home-button');
+            const loginForm = document.querySelector('#loginForm');
+
+            // Activar animaciones iniciales
+            box.classList.add('active');
+            inputs.forEach((input, index) => {
+                input.style.animationDelay = `${index * 0.3}s`;
+            });
+            submitButton.style.animationDelay = `${inputs.length * 0.3}s`;
+            homeButton.style.animationDelay = `${(inputs.length * 0.3) + 0.3}s`;
+
+            // Logo 3D efecto flotante
+            logo3d.querySelectorAll('span').forEach((span, index) => {
+                span.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Efecto de seguimiento del cursor para elementos 3D
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                logo3d.style.transform = `translateY(-50%) rotateY(${mouseX * 20 - 10}deg) rotateX(${mouseY * 10 - 5}deg)`;
+                
+                gymElements.forEach(elem => {
+                    const rect = elem.getBoundingClientRect();
+                    const elemX = rect.left + rect.width / 2;
+                    const elemY = rect.top + rect.height / 2;
+                    
+                    const moveX = (e.clientX - elemX) / 50;
+                    const moveY = (e.clientY - elemY) / 50;
+                    
+                    elem.style.transform = `translateX(${moveX}px) translateY(${moveY}px) translateZ(30px) rotate(${moveX + moveY}deg)`;
+                });
+            });
+
+            // Restablecer la posición cuando el cursor sale de la pantalla
+            document.addEventListener('mouseleave', function() {
+                logo3d.style.transform = 'translateY(-50%)';
+                gymElements.forEach(elem => {
+                    elem.style.transform = 'translateZ(0) rotate(0deg)';
+                });
+            });
+
+            // Para dispositivos táctiles - efecto giroscopio
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', function(e) {
+                    if (e.beta && e.gamma) {
+                        const tiltX = e.gamma / 30; // Giro lado a lado
+                        const tiltY = e.beta / 30;  // Giro adelante/atrás
+                        
+                        logo3d.style.transform = `translateY(-50%) rotateY(${tiltX * 10}deg) rotateX(${tiltY * 10}deg)`;
+                        
+                        gymElements.forEach(elem => {
+                            elem.style.transform = `translateX(${tiltX * 10}px) translateY(${tiltY * 10}px) translateZ(20px)`;
+                        });
+                    }
+                });
+            }
+
+            // Manejo de errores mejorado
+            const closeButtons = document.querySelectorAll('.close-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.parentElement.style.opacity = '0';
+                    setTimeout(() => {
+                        this.parentElement.style.display = 'none';
+                    }, 300);
+                });
+            });
+
+
+            // Interceptar el envío del formulario
+loginForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const correo = document.querySelector('input[name="correo"]').value;
+    const contrasena = document.querySelector('input[name="contrasena"]').value;
+
+    $.ajax({
+        url: '/api/auth/login', // CORREGIDO: llamada a tu endpoint JWT
+        type: 'POST',
+        data: JSON.stringify({ correo, contrasena }),
+        contentType: 'application/json', // MUY IMPORTANTE
+        success: function(response) {
+            localStorage.setItem('jwtToken', response.token);
+            localStorage.setItem('userEmail', correo);
+            localStorage.setItem('nombre', response.nombre); // ← AQUI ESTABA FALTANDO
+            localStorage.setItem('rol', response.rol); // ← AQUI ESTABA FALTANDO
+            localStorage.setItem('usuarioId', response.usuarioId); // ← AQUI ESTABA FALTANDO
+            Swal.fire({
+                icon: 'success',
+                title: '¡Inicio de sesión exitoso!',
+                text: 'Redirigiendo...',
+                timer: 1500
+            }).then(() => {
+                switch (response.rol.toUpperCase()) {
+    case 'ADMIN':
+        window.location.href = '/admin/adminpanel';
+        break;
+    case 'ENTRENADOR':
+        window.location.href = '/entrenador/panelentrenador';
+        break;
+    case 'USUARIO':
+    default:
+        window.location.href = '/usuario/userpanel';
+        break;
+}
+
+            });
+        },
+        error: function(xhr) {
+            let errorMessage = 'Credenciales inválidas. Por favor, intenta nuevamente.';
+            if (xhr.status === 403 || xhr.status === 401) {
+                errorMessage = 'Correo o contraseña incorrectos o cuenta no verificada.';
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+});
+
+            // Cerrar mensajes de error después de 5 segundos
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(errorMsg => {
+                setTimeout(() => {
+                    errorMsg.style.opacity = '0';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+/* --- BOTÓN CERRAR SESIÓN ESTILO FITZONE --- */
+.btn-logout {
+    background-color: #e31c25;  /* Rojo FitZone */
+    color: #fff !important;
+    padding: 8px 16px !important;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    margin-left: 10px;
+}
+
+.btn-logout:hover {
+    background-color: #b6161e;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(227, 28, 37, 0.4);
+}
+
+.btn-logout:active {
+    transform: scale(0.95);
+}

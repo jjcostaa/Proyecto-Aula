@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agregar Entrenador</title>
+</head>
+<body>
+    <h2>Nuevo Entrenador</h2>
+    <form th:action="@{/admin/entrenadores/guardar}" th:object="${entrenador}" method="post">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required /><br/>
+
+        <label>Especialidad:</label>
+        <input type="text" th:field="*{especialidad}" required /><br/>
+
+        <label>Correo:</label>
+        <input type="email" th:field="*{correo}" required /><br/>
+
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>

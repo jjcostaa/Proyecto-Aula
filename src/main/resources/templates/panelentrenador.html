@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>FITZONE - Panel de Entrenador</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Panel de Entrenador Gimnasio" name="keywords">
+    <meta content="Panel de Entrenador para staff de FitZone" name="description">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/panelusuario.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <a href="" class="navbar-brand">
+                <h1 class="m-0 display-4 font-weight-bold text-uppercase text-white">FitZone</h1>
+                <p class="text-white">Panel de Entrenador</p>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4 bg-secondary">
+                    <a href="#" class="nav-item nav-link active">Panel Principal</a>
+                    <a th:href="@{/mis-clases}" class="nav-item nav-link">Mis Clases</a>
+                    <a href="#" class="nav-item nav-link">Mis Clientes</a>
+                    <a href="#" class="nav-item nav-link">Rutinas</a>
+                    <a href="#" class="nav-item nav-link">Métricas</a>
+                    <a href="#" class="nav-item nav-link">Mi Perfil</a>
+                    <a href="#" class="nav-item nav-link text-primary">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Trainer Welcome Section -->
+    <div class="container py-5">
+        <div class="trainer-welcome">
+            <div class="row align-items-center">
+                <div class="col-lg-2 text-center">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Trainer Profile" class="rounded-circle img-fluid border border-white p-2">
+                </div>
+                <div class="col-lg-8">
+                    <h2>¡Bienvenido, <span th:text="${entrenador.nombre} + ' ' + ${entrenador.apellido}">James Alien</span>!</h2>
+                    <p class="mb-0">Tienes 5 clases y 8 clientes agendados para hoy</p>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="btn btn-light mr-2 animated-btn">Ver horario de hoy</a>
+                        <a href="#" class="btn btn-outline-light animated-btn">Añadir cliente</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 text-center text-lg-right mt-3 mt-lg-0">
+                    <div class="bg-white p-3 rounded shadow-sm">
+                        <h6 class="mb-0">Calificación</h6>
+                        <div class="d-flex justify-content-center mt-1">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                        </div>
+                        <h3 class="mb-0 mt-1">4.8</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Trainer Welcome Section End -->
+    <style>
+        .trainer-welcome {
+            margin-top: 100px; /* Ajusta este valor según la altura de tu navbar */
+        }
+     </style>
+
+    <!-- Dashboard Stats -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-users"></i>
+                    <h5>Clientes Activos</h5>
+                    <div class="stat-value counter" data-count="32">0</div>
+                    <p>Este mes</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-dumbbell"></i>
+                    <h5>Clases Impartidas</h5>
+                    <div class="stat-value counter" data-count="24">0</div>
+                    <p>Esta semana</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h5>Rutinas Creadas</h5>
+                    <div class="stat-value counter" data-count="18">0</div>
+                    <p>Este mes</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card text-center">
+                    <i class="fas fa-clock"></i>
+                    <h5>Horas Trabajadas</h5>
+                    <div class="stat-value counter" data-count="42">0</div>
+                    <p>Esta semana</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dashboard Stats End -->
+
+    <!-- Classes and Clients Section -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="bg-white shadow-sm rounded p-4 mb-4">
+                    <h4 class="text-primary mb-4">Mis Próximas Clases</h4>
+                    <div class="upcoming-class">
+                        <h5>Crossfit Nivel 2</h5>
+                        <p class="mb-1"><i class="far fa-clock mr-2"></i>Hoy, 17:00 - 19:00</p>
+                        <p class="mb-1"><i class="fas fa-users mr-2"></i>12 asistentes</p>
+                        <p class="mb-0"><i class="fas fa-map-marker-alt mr-2"></i>Sala Principal</p>
+                        <div class="mt-2">
+                            <a href="#" class="btn btn-sm btn-primary hover-effect"><i class="fas fa-users"></i> Ver asistentes</a>
+                        </div>
+                    </div>
+                    <div class="upcoming-class">
+                        <h5>Cardio HIIT</h5>
+                        <p class="mb-1"><i class="far fa-clock mr-2"></i>Mañana, 10:00 - 12:00</p>
+                        <p class="mb-1"><i class="fas fa-users mr-2"></i>8 asistentes</p>
+                        <p class="mb-0"><i class="fas fa-map-marker-alt mr-2"></i>Sala Cardio</p>
+                        <div class="mt-2">
+                            <a href="#" class="btn btn-sm btn-primary hover-effect"><i class="fas fa-users"></i> Ver asistentes</a>
+                        </div>
+                    </div>
+                    <div class="upcoming-class">
+                        <h5>Levantamiento Olímpico</h5>
+                        <p class="mb-1"><i class="far fa-clock mr-2"></i>Miércoles, 18:00 - 20:00</p>
+                        <p class="mb-1"><i class="fas fa-users mr-2"></i>6 asistentes</p>
+                        <p class="mb-0"><i class="fas fa-map-marker-alt mr-2"></i>Zona de Pesas</p>
+                        <div class="mt-2">
+                            <a href="#" class="btn btn-sm btn-primary hover-effect"><i class="fas fa-users"></i> Ver asistentes</a>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-primary animated-btn">Ver todas mis clases</a>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow-sm rounded p-4">
+                    <h4 class="text-primary mb-4">Rendimiento del Entrenador</h4>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Satisfacción de clientes</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Retención de clientes</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Asistencia a clases</span>
+                            <span>92%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Resultados de clientes</span>
+                            <span>87%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="87%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="bg-white shadow-sm rounded p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="text-primary mb-0">Mis Clientes</h4>
+                        <div class="input-group" style="max-width: 300px;">
+                            <input type="text" class="form-control" placeholder="Buscar cliente...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="client-card">
+                                <div class="client-header d-flex">
+                                    <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Client" class="client-img rounded-circle">
+                                    <div class="ml-3">
+                                        <h5 class="mb-1">Carlos Rodriguez</h5>
+                                        <p class="mb-0"><i class="far fa-calendar-alt mr-1"></i> Cliente desde: Mar 2023</p>
+                                        <div class="mt-1">
+                                            <span class="badge badge-light badge-client">CrossFit</span>
+                                            <span class="badge badge-light badge-client">Fuerza</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client-body">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Próxima sesión:</small>
+                                        <p class="mb-0">Hoy, 17:00 - CrossFit Nivel 2</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">Objetivo principal:</small>
+                                        <p class="mb-0">Aumentar masa muscular y fuerza</p>
+                                    </div>
+                                </div>
+                                <div class="client-progress">
+                                    <small class="text-muted">Progreso del objetivo:</small>
+                                    <div class="progress progress-small progress-animate mt-1">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" data-width="65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Notas</a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-user"></i> Perfil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="client-card">
+                                <div class="client-header d-flex">
+                                    <img src="https://randomuser.me/api/portraits/women/24.jpg" alt="Client" class="client-img rounded-circle">
+                                    <div class="ml-3">
+                                        <h5 class="mb-1">Ana Martínez</h5>
+                                        <p class="mb-0"><i class="far fa-calendar-alt mr-1"></i> Cliente desde: Ene 2023</p>
+                                        <div class="mt-1">
+                                            <span class="badge badge-light badge-client">Cardio</span>
+                                            <span class="badge badge-light badge-client">HIIT</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client-body">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Próxima sesión:</small>
+                                        <p class="mb-0">Mañana, 10:00 - Cardio HIIT</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">Objetivo principal:</small>
+                                        <p class="mb-0">Pérdida de peso y tonificación</p>
+                                    </div>
+                                </div>
+                                <div class="client-progress">
+                                    <small class="text-muted">Progreso del objetivo:</small>
+                                    <div class="progress progress-small progress-animate mt-1">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" data-width="78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Notas</a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-user"></i> Perfil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="client-card">
+                                <div class="client-header d-flex">
+                                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="client-img rounded-circle">
+                                    <div class="ml-3">
+                                        <h5 class="mb-1">Miguel Sánchez</h5>
+                                        <p class="mb-0"><i class="far fa-calendar-alt mr-1"></i> Cliente desde: Jun 2023</p>
+                                        <div class="mt-1">
+                                            <span class="badge badge-light badge-client">Peso Olímpico</span>
+                                            <span class="badge badge-light badge-client">Nutrición</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client-body">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Próxima sesión:</small>
+                                        <p class="mb-0">Miércoles, 18:00 - Levantamiento Olímpico</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">Objetivo principal:</small>
+                                        <p class="mb-0">Técnica en levantamientos olímpicos</p>
+                                    </div>
+                                </div>
+                                <div class="client-progress">
+                                    <small class="text-muted">Progreso del objetivo:</small>
+                                    <div class="progress progress-small progress-animate mt-1">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" data-width="45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Notas</a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-user"></i> Perfil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="client-card">
+                                <div class="client-header d-flex">
+                                    <img src="https://randomuser.me/api/portraits/women/53.jpg" alt="Client" class="client-img rounded-circle">
+                                    <div class="ml-3">
+                                        <h5 class="mb-1">Laura Gómez</h5>
+                                        <p class="mb-0"><i class="far fa-calendar-alt mr-1"></i> Cliente desde: Oct 2022</p>
+                                        <div class="mt-1">
+                                            <span class="badge badge-light badge-client">CrossFit</span>
+                                            <span class="badge badge-light badge-client">Rehabilitación</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="client-body">
+                                    <div class="mb-2">
+                                        <small class="text-muted">Próxima sesión:</small>
+                                        <p class="mb-0">Viernes, 16:00 - Entrenamiento Personal</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">Objetivo principal:</small>
+                                        <p class="mb-0">Rehabilitación lesión de rodilla</p>
+                                    </div>
+                                </div>
+                                <div class="client-progress">
+                                    <small class="text-muted">Progreso del objetivo:</small>
+                                    <div class="progress progress-small progress-animate mt-1">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" data-width="82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Notas</a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-user"></i> Perfil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-primary animated-btn">Ver todos mis clientes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Classes and Clients Section End -->
+
+    <!-- Client Notes Section -->
+    <div class="container py-5">
+        <div class="bg-white shadow-sm rounded p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="text-primary mb-0">Notas Recientes de Clientes</h4>
+                <a href="#" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Nota</a>
+            </div>
+            
+            <div class="bg-light p-3 rounded mb-3 note-card">
+                <div class="d-flex justify-content-between">
+                    <h5>Carlos Rodriguez - Sesión CrossFit</h5>
+                    <span class="text-primary">Hoy</span>
+                </div>
+                <p class="mb-2">Carlos ha mejorado significativamente en sus ejercicios de press de banca, aumentando 5kg desde la última sesión. Necesita trabajar más en la técnica de sentadillas y en su resistencia cardiovascular. Recomiendo aumentar las sesiones de cardio a 3 veces por semana.</p>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-share"></i> Compartir con cliente</a>
+                </div>
+            </div>
+            
+            <div class="bg-light p-3 rounded mb-3 note-card">
+                <div class="d-flex justify-content-between">
+                    <h5>Ana Martínez - Evaluación de Progreso</h5>
+                    <span class="text-primary">Ayer</span>
+                </div>
+                <p class="mb-2">Ana ha alcanzado su objetivo de pérdida de peso mensual, logrando reducir 2.5kg durante las últimas 4 semanas. Su resistencia ha mejorado notablemente, completando 30 minutos de cardio sin parar. Para el próximo mes, ajustaremos su plan para enfocarnos más en la tonificación.</p>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-share"></i> Compartir con cliente</a>
+                </div>
+            </div>
+            
+            <div class="bg-light p-3 rounded mb-3 note-card">
+                <div class="d-flex justify-content-between">
+                    <h5>Miguel Sánchez - Plan de Nutrición</h5>
+                    <span class="text-primary">Hace 3 días</span>
+                </div>
+                <p class="mb-2">Hemos ajustado el plan nutricional de Miguel para incluir más proteínas (2g/kg de peso) y carbohidratos complejos antes de sus entrenamientos de levantamiento. Mantendremos un seguimiento semanal para verificar su progreso en la ganancia de masa muscular.</p>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-share"></i> Compartir con cliente</a>
+                </div>
+            </div>
+            
+            <div class="bg-light p-3 rounded note-card">
+                <div class="d-flex justify-content-between">
+                    <h5>Laura Gómez - Rehabilitación</h5>
+                    <span class="text-primary">Hace 5 días</span>
+                </div>
+                <p class="mb-2">Laura está respondiendo muy bien a los ejercicios de rehabilitación para su rodilla. Hemos incrementado la carga en los ejercicios de estabilidad y ahora puede realizar sentadillas parciales sin dolor. Seguiremos con el plan actual por 2 semanas más antes de avanzar a la siguiente fase.</p>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-share"></i> Compartir con cliente</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Client Notes Section End -->
+
+    <!-- Weekly Schedule -->
+    <div class="container gym-feature py-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Mi Horario Semanal</h4>
+            <h4 class="display-4 font-weight-bold">Clases y Sesiones</h4>
+        </div>
+        <div class="bg-white shadow-sm p-4 rounded">
+            <div class="table-responsive">
+                <table class="table table-bordered m-0 schedule-table">
+                    <thead class="bg-primary text-white text-center">
+                        <tr>
+                            <th width="12%">Hora</th>
+                            <th width="12%">Lunes</th>
+                            <th width="12%">Martes</th>
+                            <th width="12%">Miércoles</th>
+                            <th width="12%">Jueves</th>
+                            <th width="12%">Viernes</th>
+                            <th width="12%">Sábado</th>
+                            <th width="12%">Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <th class="bg-primary text-white align-middle">06:00 - 08:00</th>
+                            <td>
+                                <div class="schedule-cell">
+                                    CrossFit<br>
+                                    <small>8 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    CrossFit<br>
+                                    <small>10 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    CrossFit<br>
+                                    <small>12 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-primary text-white align-middle">10:00 - 12:00</th>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Personal<br>
+                                    <small>2 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Cardio HIIT<br>
+                                    <small>8 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Cardio HIIT<br>
+                                    <small>6 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-primary text-white align-middle">16:00 - 18:00</th>
+                            <td>
+                                <div class="schedule-cell">
+                                    Personal<br>
+                                    <small>3 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Personal<br>
+                                    <small>3 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Personal<br>
+                                    <small>4 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-primary text-white align-middle">18:00 - 20:00</th>
+                            <td></td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Pesas<br>
+                                    <small>6 clientes</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Lev. Olímpico<br>
+                                    <small>6 clientes</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="schedule-cell">
+                                    Pesas<br>
+                                    <small>8 clientes</small>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-primary animated-btn">Modificar mi horario</a>
+            </div>
+        </div>
+    </div>
+    <!-- Weekly Schedule End -->
+
+    <!-- Trainer Tools Section -->
+    <div class="container py-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Herramientas de Entrenador</h4>
+            <h4 class="display-4 font-weight-bold">Gestiona tu trabajo</h4>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h4>Crear Rutina</h4>
+                    <p>Crea rutinas personalizadas para tus clientes y ajústalas según sus necesidades y progreso</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Crear Rutina</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4>Plan Nutricional</h4>
+                    <p>Desarrolla planes nutricionales adaptados a los objetivos y necesidades de cada cliente</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Nuevo Plan</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h4>Agenda</h4>
+                    <p>Administra tu agenda, programa clases y sesiones personales con tus clientes</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Ver Agenda</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Seguimiento</h4>
+                    <p>Realiza un seguimiento detallado del progreso de tus clientes y sus objetivos</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Registrar Progreso</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h4>Biblioteca de Ejercicios</h4>
+                    <p>Accede a nuestra biblioteca de ejercicios con videos y descripciones detalladas</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Ver Ejercicios</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trainer-stats-card text-center">
+                    <div class="display-1 text-primary mb-4">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h4>Mensajes</h4>
+                    <p>Comunícate con tus clientes, responde sus dudas y envía notificaciones</p>
+                    <a href="#" class="btn btn-primary mt-2 animated-btn">Mensajes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Trainer Tools Section End -->
+
+    <!-- IMC Calculator -->
+    <div class="container-fluid position-relative my-5">
+        <div class="container">
+            <div class="row px-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="pr-md-3 d-none d-md-block">
+                        <h4 class="text-primary">Herramienta para Entrenadores</h4>
+                        <h4 class="display-4 font-weight-bold mb-4">Calculadora de IMC</h4>
+                        <p class="m-0">Utiliza esta herramienta para calcular rápidamente el IMC de tus clientes y registrar su progreso a lo largo del tiempo. Recuerda que el IMC es solo un indicador y debe ser interpretado junto con otros factores.</p>
+                        <img src="https://images.unsplash.com/photo-1594882645126-14020914d58d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Fitness Tracking" class="img-fluid mt-4 rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-md-6 bg-white shadow-sm py-5">
+                    <div class="py-5 px-3">
+                        <h1 class="mb-4">Calculadora de IMC</h1>
+                        <div class="bg-light p-3 rounded mb-4 shadow-sm">
+                            <p class="mb-2">Utiliza esta herramienta para calcular el IMC de tus clientes. Selecciona un cliente o ingresa manualmente los datos.</p>
+                            <div class="form-group">
+                                <label for="clienteSelect">Seleccionar Cliente:</label>
+                                <select class="form-control form-control-lg" id="clienteSelect">
+                                    <option value="">-- Seleccionar Cliente --</option>
+                                    <option value="1">Carlos Rodriguez</option>
+                                    <option value="2">Ana Martínez</option>
+                                    <option value="3">Miguel Sánchez</option>
+                                    <option value="4">Laura Gómez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input type="text" id="peso" class="form-control form-control-lg" placeholder="Peso (KG)">
+                                </div>
+                                <div class="col form-group">
+                                    <input type="text" id="altura" class="form-control form-control-lg" placeholder="Altura (CM)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="button" id="calcularBtn" class="btn btn-lg btn-block btn-primary animated-btn" value="Calcular IMC">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- IMC Calculator End -->
+
+    <!-- Modal de Resultado IMC -->
+    <div id="bmiModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1050;">
+        <div style="background:#fff; margin:10% auto; padding:20px; width:90%; max-width:400px; border-radius:10px; position:relative;">
+            <span id="closeModal" style="position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer;">&times;</span>
+            <h4>Resultado del IMC</h4>
+            <p id="bmiResultText" style="margin-bottom: 20px;"></p>
+            <div class="d-flex justify-content-between">
+                <button id="updateBtn" class="btn btn-primary">Guardar en historial</button>
+                <button id="shareBtn" class="btn btn-outline-primary">Compartir con cliente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script BMI Mejorado -->
+    <script>
+        document.getElementById('calcularBtn').addEventListener('click', function () {
+            try {
+                // Obtener valores y validar formato
+                const pesoInput = document.getElementById('peso').value.trim();
+                const alturaInput = document.getElementById('altura').value.trim();
+                
+                // Validar que los campos no estén vacíos
+                if (pesoInput === '' || alturaInput === '') {
+                    mostrarError("Por favor, completa ambos campos: peso y altura.");
+                    return;
+                }
+                
+                // Convertir y validar que sean números
+                const peso = parseFloat(pesoInput);
+                const alturaCm = parseFloat(alturaInput);
+                
+                // Validar que sean números válidos
+                if (isNaN(peso) || isNaN(alturaCm)) {
+                    mostrarError("Por favor, introduce solo números para peso y altura.");
+                    return;
+                }
+                
+                // Validar rangos lógicos
+                if (peso <= 0 || peso > 500) {
+                    mostrarError("Por favor, introduce un peso válido entre 1 y 500 kg.");
+                    return;
+                }
+                
+                if (alturaCm <= 0 || alturaCm > 250) {
+                    mostrarError("Por favor, introduce una altura válida entre 1 y 250 cm.");
+                    return;
+                }
+                
+                const alturaM = alturaCm / 100;
+                const imc = peso / (alturaM * alturaM);
+                
+                // Validar resultado del IMC
+                if (imc <= 0 || imc > 100) {
+                    mostrarError("El cálculo del IMC ha producido un valor fuera de rango. Por favor, verifica los datos.");
+                    return;
+                }
+                
+                let categoria = "";
+                let recomendacion = "";
+        
+                // Clasificación IMC
+                if (imc < 18.5) {
+                    categoria = "Bajo peso";
+                    recomendacion = "Recomendar al cliente aumentar la ingesta calórica con alimentos nutritivos y proteínas. Considerar consulta con nutricionista.";
+                } else if (imc < 24.9) {
+                    categoria = "Normal";
+                    recomendacion = "El cliente está en un rango saludable. Mantener plan actual y enfocarse en objetivos específicos de rendimiento.";
+                } else if (imc < 29.9) {
+                    categoria = "Sobrepeso";
+                    recomendacion = "Sugerir ajustes en la dieta y aumentar actividad cardiovascular. Monitorear progreso semanalmente.";
+                } else {
+                    categoria = "Obesidad";
+                    recomendacion = "Desarrollar un plan integral con énfasis en nutrición, ejercicio adaptado y considerar apoyo de especialistas.";
+                }
+        
+                const resultado = `
+                    <strong>Peso:</strong> ${peso} kg<br>
+                    <strong>Altura:</strong> ${alturaCm} cm<br>
+                    <strong>IMC:</strong> ${imc.toFixed(1)}<br>
+                    <strong>Categoría:</strong> ${categoria}<br><br>
+                    <strong>Recomendación para entrenador:</strong><br>
+                    <em>${recomendacion}</em>
+                `;
+        
+                document.getElementById('bmiResultText').innerHTML = resultado;
+                document.getElementById('bmiModal').style.display = 'block';
+            } catch (error) {
+                mostrarError("Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.");
+                console.error("Error en el cálculo de IMC:", error);
+            }
+        });
+        
+        // Función para mostrar errores
+        function mostrarError(mensaje) {
+            // Usar el mismo modal pero con mensaje de error
+            document.getElementById('bmiResultText').innerHTML = `<div class="alert alert-danger">${mensaje}</div>`;
+            document.getElementById('bmiModal').style.display = 'block';
+        }
+        
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('bmiModal').style.display = 'none';
+        });
+        
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('bmiModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('updateBtn').addEventListener('click', function () {
+            alert("Datos guardados en el historial del cliente."); 
+            document.getElementById('bmiModal').style.display = 'none';
+        });
+        
+        document.getElementById('shareBtn').addEventListener('click', function () {
+            alert("Resultados compartidos con el cliente."); 
+            document.getElementById('bmiModal').style.display = 'none';
+        });
+        
+        // Cliente seleccionado
+        document.getElementById('clienteSelect').addEventListener('change', function() {
+            // Aquí podrías cargar los datos del cliente seleccionado
+            if (this.value !== "") {
+                // Solo como demostración - en un caso real estos datos vendrían de una BD
+                let pesoCliente, alturaCliente;
+                
+                switch(this.value) {
+                    case "1": // Carlos Rodriguez
+                        pesoCliente = "78";
+                        alturaCliente = "177";
+                        break;
+                    case "2": // Ana Martínez
+                        pesoCliente = "62";
+                        alturaCliente = "165";
+                        break;
+                    case "3": // Miguel Sánchez
+                        pesoCliente = "85";
+                        alturaCliente = "182";
+                        break;
+                    case "4": // Laura Gómez
+                        pesoCliente = "58";
+                        alturaCliente = "160";
+                        break;
+                }
+                
+                document.getElementById('peso').value = pesoCliente;
+                document.getElementById('altura').value = alturaCliente;
+            }
+        });
+        
+        // Permitir validación en tiempo real y solo números en los campos
+        document.getElementById('peso').addEventListener('input', function(e) {
+            // Permitir solo números y un punto decimal
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            // Evitar múltiples puntos decimales
+            if (this.value.split('.').length > 2) {
+                this.value = this.value.replace(/\.+$/, '');
+            }
+        });
+        
+        document.getElementById('altura').addEventListener('input', function(e) {
+            // Permitir solo números y un punto decimal
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            // Evitar múltiples puntos decimales
+            if (this.value.split('.').length > 2) {
+                this.value = this.value.replace(/\.+$/, '');
+            }
+        });
+    </script>
+
+    <!-- Footer Start -->
+    <div class="footer container-fluid mt-5 py-5 px-sm-3 px-md-5 text-white">
+        <div class="row pt-5">
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Contacto FitZone</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces Rápidos</h4>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Panel Principal</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis Clases</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis Clientes</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Rutinas</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Mi Perfil</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Horario del Gimnasio</h4>
+                <h5 class="text-white">Lunes - Viernes</h5>
+                <p>8.00 AM - 8.00 PM</p>
+                <h5 class="text-white">Sábado - Domingo</h5>
+                <p>2.00 PM - 8.00 PM</p>
+                <a href="#" class="btn btn-outline-primary">Ver todas las ubicaciones</a>
+            </div>
+        </div>
+        <div class="container border-top border-dark pt-5">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-white font-weight-bold" href="#">FitZone</a>. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-outline-primary back-to-top" id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/panelentrenador.js}"></script>
+    <script>
+        // Counter Animation
+        $(document).ready(function() {
+            // Contador para estadísticas
+            function startCounter() {
+                $('.counter').each(function () {
+                    const $this = $(this);
+                    const countTo = parseInt($this.attr('data-count'));
+                    
+                    $({ countNum: 0 }).animate({
+                        countNum: countTo
+                    }, {
+                        duration: 2000,
+                        easing: 'swing',
+                        step: function() {
+                            $this.text(Math.floor(this.countNum));
+                        },
+                        complete: function() {
+                            $this.text(this.countNum);
+                        }
+                    });
+                });
+            }
+            
+            // Animación de progreso
+            function animateProgress() {
+                $('.progress-animate .progress-bar').each(function() {
+                    const width = $(this).attr('data-width');
+                    $(this).css('width', width);
+                });
+            }
+            
+            // Iniciar animaciones al cargar
+            startCounter();
+            animateProgress();
+            
+            // Botón de regreso arriba
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('.back-to-top').fadeIn('slow');
+                } else {
+                    $('.back-to-top').fadeOut('slow');
+                }
+            });
+            
+            $('.back-to-top').click(function () {
+                $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>
+

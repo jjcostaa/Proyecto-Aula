@@ -1,0 +1,162 @@
+/* Estilos para el modal de pago */
+.payment-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.4s;
+  position: relative;
+}
+
+@keyframes modalFadeIn {
+  from {opacity: 0; transform: translateY(-50px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #e63946;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-modal:hover {
+  color: #c1121f;
+  transform: scale(1.1);
+}
+
+#modalTitle {
+  color: #e63946;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e63946;
+  padding-bottom: 10px;
+}
+
+.payment-option {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+  border-color: #e63946;
+  background-color: #fff5f5;
+}
+
+.payment-option.active {
+  border: 2px solid #e63946;
+  background-color: #fff5f5;
+}
+
+.payment-icon {
+  background-color: #ffecee;
+  color: #e63946;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-size: 18px;
+}
+
+.payment-option.active .payment-icon {
+  background-color: #e63946;
+  color: white;
+}
+
+.payment-option i {
+  font-size: 22px;
+}
+
+#confirmPayment {
+  background-color: #e63946;
+  border-color: #e63946;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+#confirmPayment:hover {
+  background-color: #c1121f;
+  border-color: #c1121f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(230, 57, 70, 0.3);
+}
+
+.form-check-input:checked {
+  background-color: #e63946;
+  border-color: #e63946;
+}
+
+.form-control:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 0 0.2rem rgba(230, 57, 70, 0.25);
+}
+
+#creditCardForm label {
+  color: #495057;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.badge-success {
+  background-color: #e63946;
+}
+
+/* Animaciones para los campos del formulario */
+.form-control {
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  transform: translateY(-2px);
+}
+
+/* Estilo para mensajes de error en el formulario */
+.invalid-feedback {
+  color: #e63946;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Efecto hover para el texto del plan seleccionado */
+#planDescription {
+  transition: all 0.3s;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#planDescription:hover {
+  background-color: #ffecee;
+}
+
+#selectedPlan, #selectedPrice {
+  color: #e63946;
+  font-weight: 700;
+}

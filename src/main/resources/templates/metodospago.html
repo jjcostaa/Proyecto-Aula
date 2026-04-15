@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Métodos de Pago | FitZone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2d0a6d5aa.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f6f6f6;
+      color: #333;
+    }
+
+    header {
+      background: #1f1f1f;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ff6600;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 3rem 1rem 1.5rem;
+    }
+
+    .section-title h1 {
+      font-size: 2.5rem;
+      color: #1f1f1f;
+    }
+
+    .payments-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .card {
+      width: 320px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card i {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: #ff6600;
+    }
+
+    .card h3 {
+      color: #ff6600;
+      margin-bottom: 0.8rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .back-home {
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+
+    .back-home a {
+      text-decoration: none;
+      background-color: #1f1f1f;
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .back-home a:hover {
+      background-color: #333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.imgur.com/2yaf2wb.png" alt="FitZone Logo">
+    <nav>
+      <a href="/home">Inicio</a>
+      <a href="/promos">Promociones</a>
+      <a href="/login">Login</a>
+      <a href="/registro">Registro</a>
+    </nav>
+  </header>
+
+  <div class="section-title">
+    <h1>Métodos de Pago y Convenios</h1>
+    <p style="margin-top: 0.5rem; color: #777;">Opciones fáciles, rápidas y seguras para mantener tu salud al día</p>
+  </div>
+
+  <div class="payments-container">
+
+    <div class="card">
+      <i class="fas fa-credit-card"></i>
+      <h3>Pagos con Tarjeta</h3>
+      <p>Aceptamos tarjetas de crédito y débito Visa, MasterCard y American Express. Transacciones 100% seguras.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-mobile-alt"></i>
+      <h3>Pagos Virtuales</h3>
+      <p>Paga desde tu móvil usando Nequi, Daviplata o PSE. Simple, rápido y sin filas.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-wallet"></i>
+      <h3>Pago en Efectivo</h3>
+      <p>También puedes realizar tu pago directamente en nuestras sedes físicas en recepción.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-handshake"></i>
+      <h3>Convenios Empresariales</h3>
+      <p>Descuentos especiales para empleados de empresas aliadas. ¡Consulta si tu empresa tiene convenio con nosotros!</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-building"></i>
+      <h3>Planes Corporativos</h3>
+      <p>Diseñamos planes para empresas que quieran motivar a sus empleados con actividad física y bienestar.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-globe-americas"></i>
+      <h3>Pagos Internacionales</h3>
+      <p>Si estás fuera del país, también puedes pagar mediante PayPal y transferencias internacionales.</p>
+    </div>
+
+  </div>
+
+  <div class="back-home">
+    <a href="/home">⬅ Volver al Inicio</a>
+  </div>
+
+  <script>
+    // Animación de entrada suave para todas las tarjetas
+    document.addEventListener("DOMContentLoaded", () => {
+      const cards = document.querySelectorAll(".card");
+      cards.forEach((card, i) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        setTimeout(() => {
+          card.style.transition = "all 0.6s ease";
+          card.style.opacity = "1";
+          card.style.transform = "translateY(0)";
+        }, 200 * i);
+      });
+    });
+  
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.textContent = message;
+      toast.style.position = "fixed";
+      toast.style.bottom = "30px";
+      toast.style.right = "30px";
+      toast.style.background = "#ff6600";
+      toast.style.color = "white";
+      toast.style.padding = "12px 18px";
+      toast.style.borderRadius = "10px";
+      toast.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
+      toast.style.fontWeight = "bold";
+      toast.style.zIndex = "1000";
+      toast.style.opacity = "0";
+      toast.style.transition = "opacity 0.3s ease";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.style.opacity = "1", 100);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+  
+    // Evento click en cada tarjeta
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => {
+        const title = card.querySelector("h3").textContent;
+        showToast(`Más info sobre: ${title}`);
+      });
+    });
+  </script>
+  
+
+</body>
+</html>

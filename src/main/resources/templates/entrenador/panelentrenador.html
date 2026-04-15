@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Panel de Entrenador - FitZone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Panel de Entrenador Gimnasio" name="keywords">
+    <meta content="Panel de Entrenador para staff de FitZone" name="description">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+    <link href="img/favicon.ico" rel="icon">
+    <link th:href="@{/css/panelentrenador.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top">
+                <!-- LOGO REDONDO -->
+    <img 
+        th:src="@{/img/Fitzone.png}" 
+        alt="FitZone Logo" 
+        style="
+            height: 90px; 
+            width: 90px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-right: 15px;
+        ">
+
+    <!-- TEXTOS -->
+    <div>
+        <h1 
+            class="m-0 font-weight-bold text-uppercase text-white"
+            style="font-size: 40px; line-height: 1;">
+            FitZone
+        </h1>
+
+        <p 
+            class="text-white mb-0"
+            style="font-size: 16px; line-height: 1.2;">
+            Tu gimnasio, tu comunidad
+        </p>
+    </div>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4 bg-secondary">
+                    <a href="#" class="nav-item nav-link active">Panel Principal</a>
+                    <form id="logoutForm" action="/logout" method="post" style="display: none;">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    </form>
+
+                    <a href="#" class="nav-item nav-link btn-logout" onclick="confirmLogout(); return false;">
+                        Cerrar Sesión
+                    </a>
+
+                    <script>
+                        function confirmLogout() {
+                            Swal.fire({
+                                title: '¿Estás seguro?',
+                                text: "¿Deseas cerrar sesión?",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Sí, cerrar sesión',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('logoutForm').submit();
+                                }
+                            });
+                        }
+                    </script>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Inicio del encabezado de página -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5"
+            style="min-height: 400px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Panel De Entrenador</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">💥 No compitas con nadie, solo supérate a ti
+                        mismo 💪🔥 Hoy es tu oportunidad para ser más fuerte que ayer</a></p>
+                <p class="m-0 text-white px-2">🚀🏋️‍♂️🏆</p>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del encabezado de página -->
+
+    <!-- Bienvenida -->
+    <div class="container py-4">
+        <!-- Bienvenida -->
+        <section class="mb-5">
+            <div class="bg-primary text-white p-4 rounded shadow-sm">
+                <h2 id="bienvenida" class="display-5 mb-0">¡Bienvenido!</h2>
+                <p class="lead mt-2 mb-0">Panel de control para entrenadores</p>
+            </div>
+        </section>
+
+        <div class="row">
+            <!-- Crear Clase -->
+            <section class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h3 class="h5 mb-0">Crear Nueva Clase</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="form-clase">
+                            <div class="mb-3">
+                                <label for="nombreClase" class="form-label">Nombre de la clase:</label>
+                                <input type="text" class="form-control" id="nombreClase" name="nombreClase" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcionClase" class="form-label">Descripción:</label>
+                                <input type="text" class="form-control" id="descripcionClase" name="descripcionClase"
+                                    required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Crear Clase</button>
+                        </form>
+                        <div id="mensaje-clase" class="mt-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Listado de Clases -->
+            <section class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h3 class="h5 mb-0">Mis Clases</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul id="listaClases" class="list-group">
+                            <!-- Aquí se mostrarán las clases -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Inicio de la función para reportar problemas -->
+    <div class="subscribe container-fluid my-5 py-5 text-center">
+        <h4 class="display-4 text-white font-weight-bold mt-5 mb-3">¿Tienes un problema? ¡Repórtalo aquí!</h4>
+        <p class="text-white mb-4">Si tienes algún inconveniente, sugerencia o queja, no dudes en enviarnos tu mensaje.
+            Estamos aquí para ayudarte a mejorar tu experiencia.</p>
+
+        <!-- Formulario de reporte -->
+        <form class="form-inline justify-content-center mb-5">
+            <div class="input-group w-75 mx-auto">
+                <input type="txt" class="form-control-lg" placeholder="Escribe tu queja aqui." required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Enviar Reporte</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensaje adicional -->
+        <p class="text-white mb-4">Recibirás una respuesta en un plazo de 48 horas. Gracias por tu paciencia.</p>
+    </div>
+    <!-- Fin de la función para reportar problemas -->
+
+
+    <div class="container feature pt-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Propuesta para Entrenadores</h4>
+            <h4 class="display-4 font-weight-bold">Plan de Trabajo y Estrategias de Mejora</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-sm-5">
+                        <img class="img-fluid mb-3 mb-sm-0" src="img/feature-1.jpg" alt="Instrucciones en video">
+                        <i class="flaticon-barbell"></i>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4 class="font-weight-bold">Implementación de Instrucciones en Video</h4>
+                        <p>Grabar rutinas explicadas por entrenadores y crear una biblioteca digital. Esto ayudará a los
+                            usuarios a entrenar con mejor técnica y seguridad desde cualquier lugar.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-sm-5">
+                        <img class="img-fluid mb-3 mb-sm-0" src="img/feature-2.jpg" alt="Calendario de entrenamiento">
+                        <i class="flaticon-training"></i>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4 class="font-weight-bold">Calendario de Entrenamiento Personalizado</h4>
+                        <p>Diseñar rutinas semanales adaptadas a distintos niveles y establecer metas mensuales. Esto
+                            facilitará la constancia del usuario y el seguimiento de sus avances.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-sm-5">
+                        <img class="img-fluid mb-3 mb-sm-0" src="img/feature-3.jpg" alt="WiFi y apps gratuitas">
+                        <i class="flaticon-trends"></i>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4 class="font-weight-bold">Conectividad y Apps Gratuitas</h4>
+                        <p>Ofrecer WiFi libre y promover el uso de apps para registrar entrenamientos y avances. Esto
+                            digitaliza la experiencia y mejora la interacción con el gimnasio.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-sm-5">
+                        <img class="img-fluid mb-3 mb-sm-0" src="img/feature-4.jpg" alt="Apoyo comunitario">
+                        <i class="flaticon-support"></i>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4 class="font-weight-bold">Fortalecimiento del Apoyo Comunitario</h4>
+                        <p>Crear retos grupales, actividades mensuales y comunidades en redes. Esto fomentará la
+                            motivación y el sentido de pertenencia entre los usuarios.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Estrategias y Consejos para Entrenadores -->
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-training display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Estrategia de Progresión</h2>
+                        <p>Establecer microobjetivos semanales y evaluar los avances individuales. Esto permite mantener
+                            la motivación del usuario y ajustar los planes de forma precisa.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-primary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-weightlifting display-3 text-secondary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Variedad en los Ejercicios</h2>
+                        <p>Incluir cambios periódicos en las rutinas para evitar estancamiento y mantener el interés.
+                            Combina fuerza, resistencia, y ejercicios funcionales según el perfil del cliente.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-treadmill display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Asesoría Nutricional</h2>
+                        <p>Brindar orientación básica o coordinación con un nutricionista. Una nutrición adecuada
+                            acelera los resultados y mejora el rendimiento físico del cliente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de Estrategias -->
+
+    <!-- Inicio del blog -->
+    <div class="container pt-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Nuestro blog</h4>
+            <h4 class="display-4 font-weight-bold">Últimos artículos</h4>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 mb-5 blog-item">
+                <img class="img-fluid mb-4" src="img/blog-1.jpg" alt="Consejos para entrenar mejor">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="d-flex flex-column align-items-center justify-content-center rounded-circle bg-primary text-white"
+                        style="width: 80px; height: 80px;">
+                        <small>01</small>
+                        <strong class="text-uppercase m-0 text-white">Jan</strong>
+                        <small>2025</small>
+                    </div>
+                    <div class="pl-3">
+                        <h3 class="font-weight-bold">5 consejos para mejorar tu entrenamiento</h3>
+                        <div class="d-flex">
+                            <small class="mr-2 text-muted"><i class="fa fa-user"></i> Admin</small>
+                            <small class="mr-2 text-muted"><i class="fa fa-folder"></i> Entrenamiento</small>
+                            <small class="mr-2 text-muted"><i class="fa fa-comments"></i> 15 Comentarios</small>
+                        </div>
+                    </div>
+                </div>
+                <p>Descubre cómo pequeños ajustes en tu rutina pueden generar grandes resultados. Desde la técnica hasta
+                    el descanso, todo cuenta para avanzar con seguridad y eficacia.</p>
+                <a class="btn btn-outline-primary mt-2 px-3" href="">Leer más <i class="fa fa-angle-right"></i></a>
+            </div>
+
+            <div class="col-lg-6 mb-5 blog-item">
+                <img class="img-fluid mb-4" src="img/blog-2.jpg" alt="Alimentación fitness">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="d-flex flex-column align-items-center justify-content-center rounded-circle bg-primary text-white"
+                        style="width: 80px; height: 80px;">
+                        <small>01</small>
+                        <strong class="text-uppercase m-0 text-white">Jan</strong>
+                        <small>2025</small>
+                    </div>
+                    <div class="pl-3">
+                        <h3 class="font-weight-bold">Alimentación inteligente para ganar músculo</h3>
+                        <div class="d-flex">
+                            <small class="mr-2 text-muted"><i class="fa fa-user"></i> Admin</small>
+                            <small class="mr-2 text-muted"><i class="fa fa-folder"></i> Nutrición</small>
+                            <small class="mr-2 text-muted"><i class="fa fa-comments"></i> 12 Comentarios</small>
+                        </div>
+                    </div>
+                </div>
+                <p>Conoce qué alimentos priorizar, cómo repartir tus comidas y qué errores evitar para optimizar tu
+                    crecimiento muscular sin perder energía.</p>
+                <a class="btn btn-outline-primary mt-2 px-3" href="">Leer más <i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del blog -->
+
+
+    <!-- Inicio del pie de página -->
+    <div class="footer container-fluid mt-5 py-5 px-sm-3 px-md-5 text-white">
+        <div class="row pt-5">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Ponte en contacto con nosotros</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces rápidos</h4>
+                <div class="d-flex flex-column justify-content-start">
+                    <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                    <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
+                    <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                    <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contacta con nosotros</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces populares</h4>
+                <div class="d-flex flex-column justify-content-start">
+                    <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                    <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
+                    <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                    <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contacta con nosotros</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Horario de apertura</h4>
+                <h5 class="text-white">Lunes - Viernes</h5>
+                <p>8.00 AM - 8.00 PM</p>
+                <h5 class="text-white">Sábado - Domingo</h5>
+                <p>2.00 PM - 8.00 PM</p>
+            </div>
+        </div>
+        <div class="container border-top border-dark pt-5">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-white font-weight-bold" href="#">El nombre de su sitio</a>. Todos los derechos
+                reservados. Diseño propio.
+                <a class="text-white font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
+            </p>
+        </div>
+    </div>
+    <!-- Fin del pie de página -->
+
+    <!-- chatbot -->
+    <!-- Botón Flotante -->
+    <button id="chat-toggle">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
+        <div class="bot-notification">¿Necesitas ayuda?</div>
+    </button>
+
+    <!-- Muestra la notificacion para el audio -->
+    <div id="voiceTip" class="voice-tip hidden">
+        <span class="arrow-down"></span>
+    </div>
+
+    <!-- Ventana del Chat -->
+    <div id="chat-window">
+        <div id="chat-header">
+            <div class="header-title">🤖 Asistente Fitzone</div>
+            <div class="header-controls">
+                <button id="voice-toggle" class="voice-button">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="close-chat" class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="chat-body"></div>
+        <div id="chat-input">
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        // Datos de usuario desde localStorage
+        const token = localStorage.getItem("jwtToken");
+        const entrenadorId = localStorage.getItem("usuarioId");
+        const nombre = localStorage.getItem("nombre");
+        const apellido = localStorage.getItem("apellido") || ""; // Si lo tienes guardado
+
+        document.getElementById("bienvenida").textContent = `Bienvenido, ${nombre}`;
+
+        function crearClase() {
+            // Primero, verifica si ya tiene 5 clases
+            fetch(`http://localhost:8080/api/clases/entrenador/${entrenadorId}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(clases => {
+                    if (clases.length >= 5) {
+                        document.getElementById("mensaje-clase").textContent = "Solo puedes crear hasta 5 clases.";
+                        return;
+                    }
+
+                    const nombreClase = document.getElementById("nombreClase").value;
+                    const descripcion = document.getElementById("descripcionClase").value;
+
+                    // Enviamos el nombre del entrenador
+                    const nombreEntrenador = nombre + " " + apellido;
+
+                    fetch("http://localhost:8080/api/clases", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ nombreClase, descripcion, nombreEntrenador })
+                    })
+                        .then(res => {
+                            if (!res.ok) {
+                                return res.text().then(msg => { throw new Error(msg); });
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            document.getElementById("mensaje-clase").textContent = "✅ Clase creada correctamente";
+                            cargarClases();
+                            document.getElementById("form-clase").reset();
+                        })
+                        .catch(err => document.getElementById("mensaje-clase").textContent = "❌ Error al crear clase: " + err.message);
+                })
+                .catch(err => console.error("❌ Error al verificar clases:", err));
+        }
+
+        function cargarClases() {
+            fetch(`http://localhost:8080/api/clases/entrenador/${entrenadorId}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(clases => {
+                    const lista = document.getElementById("listaClases");
+                    lista.innerHTML = "";
+
+                    if (clases.length === 0) {
+                        lista.innerHTML = "<li>No tienes clases aún.</li>";
+                    }
+
+                    clases.forEach(clase => {
+                        const li = document.createElement("li");
+                        li.textContent = `${clase.nombreClase} (por ${clase.nombreEntrenador}): ${clase.descripcion}`;
+
+                        // Botón eliminar
+                        const btnEliminar = document.createElement("button");
+                        btnEliminar.textContent = "Eliminar";
+                        btnEliminar.style.marginLeft = "1em";
+                        btnEliminar.onclick = function () {
+                            if (confirm("¿Deseas eliminar esta clase?")) {
+                                eliminarClase(clase.id);
+                            }
+                        };
+                        li.appendChild(btnEliminar);
+
+                        lista.appendChild(li);
+                    });
+                })
+                .catch(err => console.error("❌ Error al cargar clases:", err));
+        }
+
+        function eliminarClase(claseId) {
+            fetch(`http://localhost:8080/api/clases/${claseId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.text().then(msg => { throw new Error(msg); });
+                    }
+                    cargarClases();
+                })
+                .catch(err => alert("❌ Error al eliminar clase: " + err.message));
+        }
+
+        document.getElementById("form-clase").addEventListener("submit", function (event) {
+            event.preventDefault();
+            crearClase();
+        });
+
+        cargarClases();
+    </script>
+</body>
+
+</html>

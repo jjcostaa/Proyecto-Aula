@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Panel Entrenador - Clases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CDN para estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Panel Entrenador - Gestión de Clases</h1>
+
+    <hr />
+
+    <!-- Formulario para crear nueva clase -->
+    <div class="card mb-4 p-3">
+        <form id="form-crear-clase" class="form-inline">
+            <div class="form-group mr-2">
+                <label for="nombre" class="mr-2">Nombre de la clase:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: Yoga" required />
+            </div>
+            <div class="form-group mr-2">
+                <label for="fechaHora" class="mr-2">Fecha y Hora:</label>
+                <input type="datetime-local" id="fechaHora" name="fechaHora" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-success">Crear Clase</button>
+        </form>
+    </div>
+
+    <!-- Contenedor donde se cargan las clases dinámicamente -->
+    <div id="lista-clases"></div>
+</div>
+
+<!-- Script JS que contiene toda la lógica Ajax -->
+<script th:src="@{/js/clases.js}"></script>
+<!-- Bootstrap JS (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

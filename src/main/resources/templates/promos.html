@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitZone - Promociones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #1f1f1f;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ff6600;
+    }
+
+    .promo-header {
+      text-align: center;
+      padding: 3rem 1rem 1rem 1rem;
+    }
+
+    .promo-header h1 {
+      font-size: 2.5rem;
+      color: #1f1f1f;
+    }
+
+    .promo-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem;
+      gap: 2rem;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .promo-card {
+      width: 300px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .promo-card:hover {
+      transform: scale(1.05);
+    }
+
+    .promo-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .promo-content {
+      padding: 1.2rem;
+    }
+
+    .promo-content h3 {
+      color: #ff6600;
+      margin-bottom: 0.5rem;
+    }
+
+    .promo-content p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .promo-content button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .promo-content button:hover {
+      background-color: #e65c00;
+    }
+
+    .filter-bar {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .filter-bar button {
+      background-color: transparent;
+      border: 2px solid #ff6600;
+      color: #ff6600;
+      padding: 0.5rem 1rem;
+      margin: 0.3rem;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-bar button:hover, .filter-bar button.active {
+      background-color: #ff6600;
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .back-home {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .back-home a {
+      text-decoration: none;
+      background-color: #1f1f1f;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .back-home a:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.imgur.com/2yaf2wb.png" alt="FitZone Logo">
+    <nav>
+      <a href="/home">Inicio</a>
+      <a href="/login">Login</a>
+      <a href="/registro">Registro</a>
+    </nav>
+  </header>
+
+  <div class="promo-header">
+    <h1>Nuestras Promociones Exclusivas 💪</h1>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterPromos('all')">Todas</button>
+    <button class="filter-btn" onclick="filterPromos('descuento')">Descuentos</button>
+    <button class="filter-btn" onclick="filterPromos('regalo')">Regalos</button>
+    <button class="filter-btn" onclick="filterPromos('clase')">Clases</button>
+  </div>
+
+  <div class="promo-container" id="promoContainer">
+    <div class="promo-card" data-type="descuento">
+      <img src="https://images.unsplash.com/photo-1605296867424-35fc25c9213e?auto=format&fit=crop&w=800&q=80" alt="Promo">
+      <div class="promo-content">
+        <h3>¡50% OFF por 3 meses!</h3>
+        <p>Accede a todas las máquinas, zonas y clases dirigidas con esta oferta increíble.</p>
+        <button>Suscribirme</button>
+      </div>
+    </div>
+
+    <div class="promo-card" data-type="clase">
+      <img src="https://images.unsplash.com/photo-1583454110551-21d8f4f6bc3b?auto=format&fit=crop&w=800&q=80" alt="Promo">
+      <div class="promo-content">
+        <h3>Clases de Yoga Gratis 🧘‍♂️</h3>
+        <p>Incluye 2 clases semanales gratis durante el primer mes de inscripción.</p>
+        <button>Suscribirme</button>
+      </div>
+    </div>
+
+    <div class="promo-card" data-type="regalo">
+      <img src="https://images.unsplash.com/photo-1600180758890-6ddaa4c3bb55?auto=format&fit=crop&w=800&q=80" alt="Promo">
+      <div class="promo-content">
+        <h3>Regalo Especial 🎁</h3>
+        <p>Obtén un kit de bienvenida FitZone con botella, toalla y gymbag.</p>
+        <button>Suscribirme</button>
+      </div>
+    </div>
+
+    <div class="promo-card" data-type="descuento">
+      <img src="https://images.unsplash.com/photo-1584466977773-376be2081be2?auto=format&fit=crop&w=800&q=80" alt="Promo">
+      <div class="promo-content">
+        <h3>Membresía Anual con 30% OFF</h3>
+        <p>Ideal para quienes se comprometen con su salud a largo plazo.</p>
+        <button>Suscribirme</button>
+      </div>
+    </div>
+
+    <div class="promo-card" data-type="clase">
+      <img src="https://images.unsplash.com/photo-1571679493362-0d23c1c6c9c4?auto=format&fit=crop&w=800&q=80" alt="Promo">
+      <div class="promo-content">
+        <h3>Entrena con un Coach Personal</h3>
+        <p>Incluye 3 sesiones personalizadas al mes con un entrenador certificado.</p>
+        <button>Suscribirme</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-home">
+    <a href="/home">⬅ Volver al Inicio</a>
+  </div>
+
+  <script>
+    function filterPromos(type) {
+      const cards = document.querySelectorAll('.promo-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      cards.forEach(card => {
+        if (type === 'all' || card.dataset.type === type) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

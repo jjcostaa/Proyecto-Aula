@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>FITZONE - Panel de Usuario</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Panel de Usuario Gimnasio" name="keywords">
+    <meta content="Panel de Usuario para miembros de FitZone" name="description">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/panelusuario.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top">
+            <!-- Logo redondo -->
+    <img 
+        th:src="@{/img/Fitzone.png}" 
+        alt="FitZone Logo" 
+        style="
+            height: 90px; 
+            width: 90px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-right: 15px;
+        ">
+    
+    <!-- Contenedor texto -->
+    <div>
+        <h1 
+            class="m-0 font-weight-bold text-uppercase text-white"
+            style="font-size: 40px; line-height: 1;">
+            FitZone
+        </h1>
+
+        <p 
+            class="text-white mb-0"
+            style="font-size: 16px; line-height: 1;">
+            Tu gimnasio, tu comunidad
+        </p>
+    </div>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4 bg-secondary">
+                    <a href="#" class="nav-item nav-link active">Panel Principal</a>
+                    <a th:href="@{/mis_clases}" class="nav-item nav-link">Mis Clases</a>
+                    <a th:href="@{/membresias}" class="nav-item nav-link">Membresías</a>
+                    <a href="#" class="nav-item nav-link">Mi Perfil</a>
+                    <form id="logoutForm" action="/logout" method="post" style="display: none;">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    </form>
+
+                    <a href="#" class="nav-item nav-link btn-logout" onclick="confirmLogout(); return false;">
+                        Cerrar Sesión
+                    </a>
+
+
+                    <script>
+                        function confirmLogout() {
+                            Swal.fire({
+                                title: '¿Estás seguro?',
+                                text: "¿Deseas cerrar sesión?",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Sí, cerrar sesión',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('logoutForm').submit();
+                                }
+                            });
+                        }
+                    </script>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Inicio del encabezado de página -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5"
+            style="min-height: 400px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">panel principal</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Panel Principal</a></p>
+                <p class="m-0 text-white px-2">/</p>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del encabezado de página -->
+
+    <!-- User Welcome Section -->
+    <div class="container py-5">
+        <div class="user-welcome">
+            <div class="row align-items-center">
+                <div class="col-lg-2 text-center">
+                    <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="User Profile"
+                        class="rounded-circle img-fluid border border-primary p-2">
+                </div>
+                <div class="col-lg-10">
+                    <h1 id="bienvenida">Bienvenido al Panel de Usuario</h1>
+                    <p class="mb-0">Última sesión: Hace 2 días - CrossFit con Adam Phillips</p>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="btn btn-primary mr-2 animated-btn">Ver mi rutina</a>
+                        <a th:href="@{/mis_clases}" class="nav-item nav-link">Reservar Clase</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- User Welcome Section End -->
+    <!-- Dashboard Stats -->
+    <div class="container my-5">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-black rounded shadow-sm py-4 px-3 border border-danger" style="border-width: 3px;">
+                    <i class="fas fa-calendar-check fa-2x text-primary mb-3"></i>
+                    <h5 class="mb-2">Asistencias</h5>
+                    <div id="asistencias" class="stat-value counter h3 mb-1" data-count="12">0</div>
+                    <p class="text-muted">Este mes</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-black rounded shadow-sm py-4 px-3 border border-danger" style="border-width: 3px;">
+                    <i class="fas fa-dumbbell fa-2x text-primary mb-3"></i>
+                    <h5 class="mb-2">Clases Reservadas</h5>
+                    <div id="clasesReservadas" class="stat-value counter h3 mb-1" data-count="3">0</div>
+                    <p class="text-muted">Próximas</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-black rounded shadow-sm py-4 px-3 border border-danger" style="border-width: 3px;">
+                    <i class="fas fa-fire-alt fa-2x text-primary mb-3"></i>
+                    <h5 class="mb-2">Calorías Quemadas</h5>
+                    <div id="caloriasQuemadas" class="stat-value counter h3 mb-1" data-count="3450">0</div>
+                    <p class="text-muted">Esta semana</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-black rounded shadow-sm py-4 px-3 border border-danger" style="border-width: 3px;">
+                    <i class="fas fa-medal fa-2x text-primary mb-3"></i>
+                    <h5 class="mb-2">Nivel Actual</h5>
+                    <div id="nivelActual" class="stat-value h3 mb-1">Plata</div>
+                    <p class="text-muted">7 puntos para Oro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dashboard Stats End -->
+
+
+
+    <!-- Progress Section -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="bg-white shadow-sm rounded p-4 mb-4">
+                    <h4 style="color: #000;" class="mb-4">Mi Progreso Fitness</h4>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Fuerza</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="75%"
+                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Resistencia</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="60%"
+                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Flexibilidad</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="45%"
+                                aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Masa muscular</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="80%"
+                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow-sm p-4 rounded">
+                    <h4 style="color: #000;" class="mb-4">Mis Objetivos Actuales</h4>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Perder 5kg</span>
+                            <span>3kg / 5kg</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="60%"
+                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>20 min de cardio diario</span>
+                            <span>15 días / 30 días</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="50%"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Aumentar 3kg de músculo</span>
+                            <span>2kg / 3kg</span>
+                        </div>
+                        <div class="progress progress-animate">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" data-width="66%"
+                                aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-outline-primary hover-effect">Establecer nuevo objetivo</a>
+                    </div>
+                </div>
+            </div>
+            <!-- final de proseso -->
+
+            <div class="col-lg-4">
+                <div class="bg-white shadow-sm p-4 rounded mb-4">
+                    <h4 class="text-primary mb-4">Clases disponibles</h4>
+                    <ul id="listaClasesEntrenadores"></ul>
+                    <div class="text-center mt-4">
+                        <a th:href="@{/mis_clases}" class="btn btn-primary animated-btn">Reservar más clases</a>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow-sm p-4 rounded" id="estadoPagoContainer">
+                    <h4 class="text-primary mb-4">Estado de Pago</h4>
+                    <div class="text-center" id="estadoPagoContenido">
+                        <p>Cargando estado de pago...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Progress Section End -->
+
+    <!-- BMI Calculator --><!-- BMI Calculator -->
+    <!-- BMI Calculator -->
+    <div class="container-fluid position-relative my-5">
+        <div class="container">
+            <div class="row px-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="pr-md-3 d-none d-md-block">
+                        <h4 class="text-primary">Tu IMC actual</h4>
+                        <h4 class="display-4 font-weight-bold mb-4">Seguimiento IMC</h4>
+                        <p class="m-0">Mantén un seguimiento de tu Índice de Masa Corporal para verificar tu progreso
+                            hacia tus objetivos de salud. Recuerda que el IMC es solo un indicador y debe ser
+                            interpretado junto con otros factores.</p>
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="Fitness Tracking" class="img-fluid mt-4 rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-md-6 bg-black shadow-sm py-5">
+                    <div class="py-5 px-3">
+                        <h1 class="mb-4">Tu Historial de IMC</h1>
+                        <div class="bg-light p-3 rounded mb-4 shadow-sm" id="bmiLastResultBox">
+                            <div class="row align-items-center">
+                                <div class="col-4 text-center">
+                                    <div id="bmiActualValue" class="display-4 text-primary font-weight-bold counter"
+                                        data-count="0">0</div>
+                                    <p class="mb-0">Actual</p>
+                                </div>
+                                <div class="col-8" id="bmiLastDetails">
+                                    <div>Peso: -- kg</div>
+                                    <div>Altura: -- cm</div>
+                                    <div>Categoría: --</div>
+                                    <div>Última actualización: --</div>
+                                </div>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input type="text" id="peso" class="form-control form-control-lg"
+                                        placeholder="Peso (KG)">
+                                </div>
+                                <div class="col form-group">
+                                    <input type="text" id="altura" class="form-control form-control-lg"
+                                        placeholder="Altura (CM)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="button" id="calcularBtn"
+                                        class="btn btn-lg btn-block btn-primary animated-btn" value="Calcular IMC">
+                                </div>
+                            </div>
+                        </form>
+                        <!-- AQUÍ pega el botón y el div del historial -->
+                        <button id="eliminarTodosBtn" class="btn btn-danger btn-block mb-3">Eliminar todo el
+                            historial</button>
+                        <div id="bmiHistorialBox" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BMI Calculator End -->
+    <!-- Inicio de la función para reportar problemas -->
+    <div class="subscribe container-fluid my-5 py-5 text-center">
+        <h4 class="display-4 text-white font-weight-bold mt-5 mb-3">¿Tienes un problema? ¡Repórtalo aquí!</h4>
+        <p class="text-white mb-4">Si tienes algún inconveniente, sugerencia o queja, no dudes en enviarnos tu mensaje.
+            Estamos aquí para ayudarte a mejorar tu experiencia.</p>
+
+        <!-- Formulario de reporte -->
+        <form class="form-inline justify-content-center mb-5">
+            <div class="input-group w-75 mx-auto">
+                <input type="txt" class="form-control-lg" placeholder="Escribe tu queja aqui." required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Enviar Reporte</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensaje adicional -->
+        <p class="text-white mb-4">Recibirás una respuesta en un plazo de 48 horas. Gracias por tu paciencia.</p>
+    </div>
+    <!-- Fin de la función para reportar problemas -->
+
+    <!-- Modal de Resultado IMC -->
+    <div id="bmiModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1050;">
+        <div
+            style="background:#fff; margin:10% auto; padding:20px; width:90%; max-width:400px; border-radius:10px; position:relative;">
+            <span id="closeModal"
+                style="position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer;">&times;</span>
+            <h4>Resultado del IMC</h4>
+            <p id="bmiResultText" style="margin-bottom: 20px;"></p>
+            <button id="updateBtn" class="btn btn-primary btn-block">Actualizar Historial</button>
+        </div>
+    </div>
+
+    <script>
+        let ultimoIMC = null;
+        let resultadoCalculado = null;
+
+        // Cargar historial IMC al cargar la página
+        document.addEventListener('DOMContentLoaded', function () {
+            cargarHistorialIMC();
+        });
+
+        function cargarHistorialIMC() {
+            const userId = localStorage.getItem("usuarioId");
+            const token = localStorage.getItem("jwtToken");
+            if (!userId || !token) return;
+
+            fetch(`http://localhost:8080/api/usuarios/${userId}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(usuario => {
+                    if (usuario.historialIMC && usuario.historialIMC.length > 0) {
+                        mostrarUltimoIMC(usuario.historialIMC);
+                        mostrarHistorialIMC(usuario.historialIMC);
+                    }
+                })
+                .catch(err => {
+                    console.error("Error al cargar historial IMC:", err);
+                });
+        }
+
+        function mostrarUltimoIMC(historial) {
+            const ultimo = historial[historial.length - 1];
+            ultimoIMC = ultimo;
+            document.getElementById('bmiActualValue').textContent = (ultimo.imc || 0).toFixed(1);
+            document.getElementById('bmiLastDetails').innerHTML = `
+            <div>Peso: ${ultimo.peso} kg</div>
+            <div>Altura: ${ultimo.altura} cm</div>
+            <div>Categoría: ${ultimo.categoria}</div>
+            <div>Última actualización: ${formatearFecha(ultimo.fecha)}</div>
+        `;
+        }
+
+        function mostrarHistorialIMC(historial) {
+            let html = '<h5 class="mt-3">Historial completo</h5><ul class="list-group">';
+            historial.slice().reverse().forEach(r => {
+                html += `<li class="list-group-item">
+                <strong>${formatearFecha(r.fecha)}:</strong> IMC: ${r.imc.toFixed(1)}, Peso: ${r.peso}kg, Altura: ${r.altura}cm, Categoría: ${r.categoria}
+            </li>`;
+            });
+            html += '</ul>';
+            document.getElementById('bmiHistorialBox').innerHTML = html;
+        }
+
+        function formatearFecha(fechaISO) {
+            if (!fechaISO) return "--";
+            const fecha = new Date(fechaISO);
+            return fecha.toLocaleDateString();
+        }
+
+        document.getElementById('calcularBtn').addEventListener('click', function () {
+            try {
+                const pesoInput = document.getElementById('peso').value.trim();
+                const alturaInput = document.getElementById('altura').value.trim();
+
+                if (pesoInput === '' || alturaInput === '') {
+                    mostrarError("Por favor, completa ambos campos: peso y altura.");
+                    return;
+                }
+
+                const peso = parseFloat(pesoInput);
+                const alturaCm = parseFloat(alturaInput);
+
+                if (isNaN(peso) || isNaN(alturaCm)) {
+                    mostrarError("Por favor, introduce solo números para peso y altura.");
+                    return;
+                }
+
+                if (peso <= 0 || peso > 500) {
+                    mostrarError("Por favor, introduce un peso válido entre 1 y 500 kg.");
+                    return;
+                }
+
+                if (alturaCm <= 0 || alturaCm > 250) {
+                    mostrarError("Por favor, introduce una altura válida entre 1 y 250 cm.");
+                    return;
+                }
+
+                const alturaM = alturaCm / 100;
+                const imc = peso / (alturaM * alturaM);
+
+                if (imc <= 0 || imc > 100) {
+                    mostrarError("El cálculo del IMC ha producido un valor fuera de rango. Por favor, verifica los datos.");
+                    return;
+                }
+
+                let categoria = "";
+                let recomendacion = "";
+
+                if (imc < 18.5) {
+                    categoria = "Bajo peso";
+                    recomendacion = "Es recomendable consultar a un nutricionista para una dieta equilibrada que te ayude a ganar peso de forma saludable.";
+                } else if (imc < 24.9) {
+                    categoria = "Normal";
+                    recomendacion = "¡Felicidades! Estás en un rango saludable. Mantén una dieta balanceada y actividad física regular.";
+                } else if (imc < 29.9) {
+                    categoria = "Sobrepeso";
+                    recomendacion = "Te sugerimos mantener una alimentación saludable y aumentar la actividad física para evitar riesgos.";
+                } else {
+                    categoria = "Obesidad";
+                    recomendacion = "Es importante que consultes con un especialista para controlar el peso y prevenir problemas de salud.";
+                }
+
+                resultadoCalculado = {
+                    peso: peso,
+                    altura: alturaCm,
+                    imc: Number(imc.toFixed(1)),
+                    categoria: categoria
+                };
+
+                const resultado = `
+                <strong>Peso:</strong> ${peso} kg<br>
+                <strong>Altura:</strong> ${alturaCm} cm<br>
+                <strong>IMC:</strong> ${imc.toFixed(1)}<br>
+                <strong>Categoría:</strong> ${categoria}<br><br>
+                <em>${recomendacion}</em>
+            `;
+
+                document.getElementById('bmiResultText').innerHTML = resultado;
+                document.getElementById('bmiModal').style.display = 'block';
+            } catch (error) {
+                mostrarError("Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.");
+                console.error("Error en el cálculo de IMC:", error);
+            }
+        });
+
+        // Función para mostrar errores
+        function mostrarError(mensaje) {
+            document.getElementById('bmiResultText').innerHTML = `<div class="alert alert-danger">${mensaje}</div>`;
+            document.getElementById('bmiModal').style.display = 'block';
+        }
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('bmiModal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('bmiModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        document.getElementById('updateBtn').addEventListener('click', function () {
+            if (!resultadoCalculado) {
+                mostrarError("No se ha calculado ningún IMC para guardar.");
+                return;
+            }
+            const userId = localStorage.getItem("usuarioId");
+            const token = localStorage.getItem("jwtToken");
+            if (!userId || !token) {
+                mostrarError("No has iniciado sesión.");
+                return;
+            }
+
+            fetch(`http://localhost:8080/api/usuarios/${userId}/imc`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(resultadoCalculado)
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("No se pudo actualizar el historial");
+                    document.getElementById('bmiModal').style.display = 'none';
+                    cargarHistorialIMC();
+                })
+                .catch(err => {
+                    mostrarError("Error al actualizar historial IMC: " + err.message);
+                });
+        });
+
+        // Permitir validación en tiempo real y solo números en los campos
+        document.getElementById('peso').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            if (this.value.split('.').length > 2) {
+                this.value = this.value.replace(/\.+$/, '');
+            }
+        });
+
+        document.getElementById('altura').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            if (this.value.split('.').length > 2) {
+                this.value = this.value.replace(/\.+$/, '');
+            }
+        });
+
+        // ... Lo anterior igual ...
+
+        function mostrarHistorialIMC(historial) {
+            let html = '<h5 class="mt-3">Historial completo</h5><ul class="list-group">';
+            historial.slice().reverse().forEach(r => {
+                html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>
+                <strong>${formatearFecha(r.fecha)}:</strong> IMC: ${r.imc.toFixed(1)}, Peso: ${r.peso}kg, Altura: ${r.altura}cm, Categoría: ${r.categoria}
+            </span>
+            <button class="btn btn-danger btn-sm ml-3" onclick="eliminarRegistroIMC('${r.fecha}')">Eliminar</button>
+        </li>`;
+            });
+            html += '</ul>';
+            document.getElementById('bmiHistorialBox').innerHTML = html;
+        }
+
+        // Eliminar TODO el historial
+        document.getElementById('eliminarTodosBtn').addEventListener('click', function () {
+            const userId = localStorage.getItem("usuarioId");
+            const token = localStorage.getItem("jwtToken");
+            if (!userId || !token) return;
+            if (!confirm("¿Seguro que quieres eliminar todo el historial?")) return;
+            fetch(`http://localhost:8080/api/usuarios/${userId}/imc`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }).then(res => {
+                if (!res.ok) throw new Error("No se pudo eliminar el historial");
+                cargarHistorialIMC();
+            }).catch(err => alert(err.message));
+        });
+
+        // Eliminar registro individual
+        function eliminarRegistroIMC(fechaISO) {
+            const userId = localStorage.getItem("usuarioId");
+            const token = localStorage.getItem("jwtToken");
+            if (!userId || !token) return;
+            if (!confirm("¿Seguro que quieres eliminar este registro?")) return;
+            fetch(`http://localhost:8080/api/usuarios/${userId}/imc/${encodeURIComponent(fechaISO)}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }).then(res => {
+                if (!res.ok) throw new Error("No se pudo eliminar el registro");
+                cargarHistorialIMC();
+            }).catch(err => alert(err.message));
+        }
+    </script>
+
+
+    <!-- Personal Trainer -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="bg-white shadow-sm p-4 rounded">
+                    <h4 class="text-primary mb-4">Mi Entrenador Personal</h4>
+                    <div class="text-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                            class="rounded-circle mb-3 trainer-img" alt="Trainer">
+                        <h5>James Alien</h5>
+                        <p>Especialista en Fuerza y Acondicionamiento</p>
+                        <div class="mt-3">
+                            <a href="#" class="btn btn-sm btn-primary mr-2 hover-effect"><i class="fas fa-comment"></i>
+                                Mensaje</a>
+                            <a href="#" class="btn btn-sm btn-outline-primary hover-effect"><i
+                                    class="fas fa-calendar-alt"></i> Cita</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="bg-white shadow-sm p-4 rounded">
+                    <h4 class="text-primary mb-4">Notas de Tu Entrenador</h4>
+                    <div class="bg-light p-3 rounded mb-3 note-card">
+                        <div class="d-flex justify-content-between">
+                            <h5>Sesión del 29/04/2025</h5>
+                            <span class="text-primary">Hace 4 días</span>
+                        </div>
+                        <p class="mb-0">Carlos ha mejorado significativamente en sus ejercicios de press de banca,
+                            aumentando 5kg desde la última sesión. Necesita trabajar más en la técnica de sentadillas y
+                            en su resistencia cardiovascular. Recomiendo aumentar las sesiones de cardio a 3 veces por
+                            semana.</p>
+                    </div>
+                    <div class="bg-light p-3 rounded mb-3 note-card">
+                        <div class="d-flex justify-content-between">
+                            <h5>Plan de Nutrición - Actualización</h5>
+                            <span class="text-primary">Hace 1 semana</span>
+                        </div>
+                        <p class="mb-0">Hemos ajustado tu plan de alimentación para incluir más proteínas después del
+                            entrenamiento. Recuerda mantener la hidratación adecuada y consumir al menos 2.5L de agua
+                            diariamente. Redujimos ligeramente los carbohidratos en las cenas para ayudar con la pérdida
+                            de grasa.</p>
+                    </div>
+                    <div class="bg-light p-3 rounded note-card">
+                        <div class="d-flex justify-content-between">
+                            <h5>Objetivos para Mayo</h5>
+                            <span class="text-primary">Hace 2 semanas</span>
+                        </div>
+                        <p class="mb-0">Para el próximo mes, nos centraremos en aumentar tu resistencia en el
+                            levantamiento de pesas y mejorar tu técnica en ejercicios compuestos. El objetivo es
+                            completar 3 series de 10 repeticiones de peso muerto con 100kg y mejorar la recuperación
+                            entre series.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Personal Trainer End -->
+
+    <!-- Weekly Schedule -->
+    <div class="container gym-feature py-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-dark font-weight-bold">Mi Horario Semanal</h4>
+            <h4 class="display-4 font-weight-bold">Planificación Personalizada</h4>
+        </div>
+        <div class="bg-white shadow-sm p-4 rounded">
+            <div class="table-responsive">
+                <table class="table table-bordered m-0">
+                    <thead class="bg-negro text-white text-center">
+                        <tr>
+                            <th>Hora</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            <th>Sábado</th>
+                            <th>Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <th class="bg-negro text-white align-middle">Mañana</th>
+                            <td>Cardio<br>6:00 - 8:00</td>
+                            <td>Descanso</td>
+                            <td>Crossfit<br>10:00 - 12:00</td>
+                            <td>Descanso</td>
+                            <td>Cardio<br>6:00 - 8:00</td>
+                            <td>Descanso</td>
+                            <td>Descanso</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-negro text-white align-middle">Tarde</th>
+                            <td>Descanso</td>
+                            <td>Pesas<br>17:00 - 19:00</td>
+                            <td>Descanso</td>
+                            <td>Pesas<br>17:00 - 19:00</td>
+                            <td>Descanso</td>
+                            <td>Cardio<br>15:00 - 17:00</td>
+                            <td>Descanso</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn bg-negro text-white animated-btn">Modificar mi horario</a>
+            </div>
+        </div>
+    </div>
+    <!-- Weekly Schedule End -->
+
+    <!-- Estilo para negro puro -->
+    <style>
+        .bg-negro {
+            background-color: #000000 !important;
+        }
+    </style>
+
+    <!-- Footer Start -->
+    <div class="footer container-fluid mt-5 py-5 px-sm-3 px-md-5 text-white">
+        <div class="row pt-5">
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Contacto FitZone</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0 social-btn"
+                        style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces Rápidos</h4>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Panel Principal</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis Clases</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mis Pagos</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Mi Progreso</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Mi Perfil</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Horario del Gimnasio</h4>
+                <h5 class="text-white">Lunes - Viernes</h5>
+                <p>8.00 AM - 8.00 PM</p>
+                <h5 class="text-white">Sábado - Domingo</h5>
+                <p>2.00 PM - 8.00 PM</p>
+                <a href="#" class="btn btn-outline-primary">Ver todas las ubicaciones</a>
+            </div>
+        </div>
+        <div class="container border-top border-dark pt-5">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-white font-weight-bold" href="#">FitZone</a>. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- chatbot -->
+    <!-- Botón Flotante -->
+    <button id="chat-toggle">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
+        <div class="bot-notification">¿Necesitas ayuda?</div>
+    </button>
+
+    <!-- Muestra la notificacion para el audio -->
+    <div id="voiceTip" class="voice-tip hidden">
+        <span class="arrow-down"></span>
+    </div>
+
+    <!-- Ventana del Chat -->
+    <div id="chat-window">
+        <div id="chat-header">
+            <div class="header-title">🤖 Asistente Fitzone</div>
+            <div class="header-controls">
+                <button id="voice-toggle" class="voice-button">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="close-chat" class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="chat-body"></div>
+        <div id="chat-input">
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-outline-primary back-to-top" id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/panelusuario.js}"></script>
+    <script th:src="@{/js/connection.js}"></script>
+</body>
+
+</html>

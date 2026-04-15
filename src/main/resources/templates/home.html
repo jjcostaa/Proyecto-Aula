@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FITZONE - Prinsipal </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free Website Template" name="keywords">
+    <meta content="Free Website Template" name="description">
+    <link href="img/favicon.ico" rel="icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+
+</head>
+<body class="bg-white">
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top">
+
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img th:src="@{/img/Fitzone.png}" alt="FitZone Logo" class="logo-img">
+                <span class="ml-2 font-weight-bold text-white" style="font-size: 37px;">FITZONE</span>
+            </a>
+
+
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4 bg-secondary">
+                  <a th:href="@{/login}" class="nav-item nav-link active">Iniciar Sesión</a>
+                    <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
+                    <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                    <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
+                    <a th:href="@{/registro}" class="nav-item nav-link">Registro</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">páginas</a>
+                        <div class="dropdown-menu text-capitalize">
+                          <a th:href="@{/blog}" class="dropdown-item">Blog en Cuadrícula</a>
+                          <a th:href="@{/single}" class="dropdown-item">Detalles del Blog</a>
+                        </div>
+                    </div>
+                    <a th:href="@{/contact}" class="nav-item nav-link">Contacto</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0">
+        <div id="blog-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="img/carousel-1.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="text-primary text-capitalize m-0">Gimnasio y centro de fitness</h3>
+                        <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">El mejor gimnasio de la ciudad</h2>
+                        <a th:href="@{/registro}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">
+                          Únete a nosotros ahora
+                      </a>
+                      
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="img/carousel-2.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="text-primary text-capitalize m-0">Gimnasio y centro de fitness</h3>
+                        <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Ponerse en forma</h2>
+                        <a th:href="@{/registro}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">
+                            Únete a nosotros ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#blog-carousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#blog-carousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- Gym Class Start -->
+    <div class="container gym-class mb-5">
+        <div class="row px-3">
+            <div class="col-md-6 p-0">
+                <div class="gym-class-box d-flex flex-column align-items-end justify-content-center bg-primary text-right text-white py-5 px-5">
+                    <i class="flaticon-six-pack"></i>
+
+                    <h3 class="display-4 mb-3 text-white font-weight-bold">Culturismo</h3>
+                    <p>
+                        Transforma tu cuerpo y supera tus límites con nuestro programa de culturismo. 
+                        Entrena con los mejores, sigue un plan personalizado y alcanza tus objetivos de fuerza y estética. 
+                        ¡Tu mejor versión empieza hoy!
+                    </p>
+                    <a th:href="@{/registro}" class="btn btn-lg btn-outline-light mt-4 px-4">Únete ahora</a>
+
+                </div>
+            </div>
+            <div class="col-md-6 p-0">
+                <div class="gym-class-box d-flex flex-column align-items-start justify-content-center bg-secondary text-left text-white py-5 px-5">
+                    <i class="flaticon-bodybuilding"></i>
+                    <h3 class="display-4 mb-3 text-white font-weight-bold">Desarrollo muscular</h3>
+                    <p>
+                        Construye masa muscular de forma eficiente con entrenamientos diseñados para maximizar tus resultados.
+                        Ya seas principiante o avanzado, te ayudamos a esculpir tu cuerpo con técnicas efectivas, nutrición adecuada y acompañamiento experto.
+                    </p>
+                    <a th:href="@{/registro}" class="btn btn-lg btn-outline-light mt-4 px-4">Únete ahora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Gym Class End -->
+
+
+    <!-- About Start -->
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img class="img-fluid mb-4 mb-lg-0" src="img/about.jpg" alt="Image">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-4 font-weight-bold mb-4">10 años de experiencia</h2>
+                <p>Una década formando cuerpos fuertes y mentes disciplinadas. Calidad, compromiso y resultados reales.</p>
+                <div class="row py-2">
+                    <div class="col-sm-6">
+                        <i class="flaticon-barbell display-2 text-primary"></i>
+                        <h4 class="font-weight-bold">Centro de gimnasio certificado</h4>
+                        <p>Instalaciones avaladas y entrenadores profesionales.</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="flaticon-medal display-2 text-primary"></i>
+                        <h4 class="font-weight-bold">Ganador de premios</h4>
+                        <p>Reconocidos por nuestra excelencia en el sector fitness.</p>
+                    </div>
+                </div>
+                <a th:href="@{/about}" class="btn btn-lg px-4 btn-outline-primary">Más información</a>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Features Start -->
+    <div class="container-fluid my-5">
+        <div class="row">
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-training display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Progresión</h2>
+                        <p>Avanza cada día con entrenamientos adaptados a tu nivel. Seguimos tu progreso paso a paso para ayudarte a superar tus metas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-primary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-weightlifting display-3 text-secondary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">ejercicio</h2>
+                        <p>Rutinas efectivas para todos los niveles, enfocadas en fuerza, resistencia y transformación física.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-treadmill display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">nutrición</h2>
+                        <p>Planes alimenticios diseñados para complementar tu entrenamiento y optimizar tus resultados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de las características -->
+
+
+    <!-- Inicio de la función GYM -->
+    <div class="container feature pt-5">
+    <div class="d-flex flex-column text-center mb-5">
+        <h4 class="text-primary font-weight-bold">¿Por qué elegirnos?</h4>
+        <h4 class="display-4 font-weight-bold">Beneficios de unirse a nuestro gimnasio</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <div class="row align-items-center">
+                <div class="col-sm-5">
+                    <img class="img-fluid mb-3 mb-sm-0" src="img/feature-1.jpg" alt="Instrucciones en video">
+                    <i class="flaticon-barbell"></i>
+                </div>
+                <div class="col-sm-7">
+                    <h4 class="font-weight-bold">Instrucciones en video</h4>
+                    <p>Accede a rutinas guiadas por profesionales desde cualquier lugar. Aprende a entrenar de forma segura y efectiva.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-5">
+            <div class="row align-items-center">
+                <div class="col-sm-5">
+                    <img class="img-fluid mb-3 mb-sm-0" src="img/feature-2.jpg" alt="Calendario de entrenamiento">
+                    <i class="flaticon-training"></i>
+                </div>
+                <div class="col-sm-7">
+                    <h4 class="font-weight-bold">Calendario de entrenamiento</h4>
+                    <p>Organiza tu semana con planes personalizados y mantén tu progreso bajo control con total claridad.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-5">
+            <div class="row align-items-center">
+                <div class="col-sm-5">
+                    <img class="img-fluid mb-3 mb-sm-0" src="img/feature-3.jpg" alt="WiFi y apps gratuitas">
+                    <i class="flaticon-trends"></i>
+                </div>
+                <div class="col-sm-7">
+                    <h4 class="font-weight-bold">Aplicaciones y WiFi gratis</h4>
+                    <p>Conéctate sin límites y usa nuestras apps exclusivas para seguir tus entrenamientos y mejorar tu experiencia.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-5">
+            <div class="row align-items-center">
+                <div class="col-sm-5">
+                    <img class="img-fluid mb-3 mb-sm-0" src="img/feature-4.jpg" alt="Apoyo comunitario">
+                    <i class="flaticon-support"></i>
+                </div>
+                <div class="col-sm-7">
+                    <h4 class="font-weight-bold">Apoyo comunitario</h4>
+                    <p>Forma parte de una comunidad que te motiva, te inspira y te acompaña en cada paso de tu transformación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Fin de la función GYM -->
+
+    <!-- Inicio de la función de suscripción -->
+    <div class="subscribe container-fluid my-5 py-5 text-center">
+        <h4 class="display-4 text-white font-weight-bold mt-5 mb-3">Suscríbete a nuestro boletín informativo</h4>
+        <p class="text-white mb-4">Suscríbete y recibe nuestro último artículo en tu bandeja de entrada.</p>
+        <form class="form-inline justify-content-center mb-5">
+            <div class="input-group">
+                <input type="text" class="form-control-lg" placeholder="Su correo electrónico">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Suscribirse</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Fin de la función de suscripción -->
+
+
+    <!-- Inicio de la función de horario de clases -->
+    <div class="container gym-feature py-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Horario de clases</h4>
+            <h4 class="display-4 font-weight-bold">Horario de trabajo y horario de clases</h4>
+        </div>
+        <div class="tab-class">
+            <ul class="nav nav-pills justify-content-center mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#class-all">Todas las clases</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-cardio">Cardio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-crossfit">Crossfit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-powerlifting">levantamiento de pesas</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="class-all" class="container tab-pane p-0 active">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-lg m-0">
+                            <thead class="bg-secondary text-white text-center">
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>lunes</th>
+                                    <th>martes</th>
+                                    <th>Miercoles</th>
+                                    <th>Jueves</th>
+                                    <th>viernes</th>
+                                    <th>Sabado</th>
+                                    <th>domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">6.00am - 8.00am</th>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">10.00am - 12.00am</th>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">5.00pm - 7.00pm</th>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">7.00pm - 9.00pm</th>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="class-cardio" class="container tab-pane fade p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-lg m-0">
+                            <thead class="bg-secondary text-white text-center">
+                                <tr>
+                                    <th>Tiempo</th>
+                                    <th>lunes</th>
+                                    <th>martes</th>
+                                    <th>miercoles</th>
+                                    <th>jueves</th>
+                                    <th>viernes</th>
+                                    <th>Sabado</th>
+                                    <th>domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">6.00am - 8.00am</th>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Cardio</h5>John Deo</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">10.00am - 12.00am</th>
+                                    <td></td>
+                                    <td><h5>levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td> 
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">5.00pm - 7.00pm</th>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">7.00pm - 9.00pm</th>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="class-crossfit" class="container tab-pane fade p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-lg m-0">
+                            <thead class="bg-secondary text-white text-center">
+                                <tr>
+                                  <th>Hora</th>
+                                  <th>lunes</th>
+                                  <th>martes</th>
+                                  <th>Miercoles</th>
+                                  <th>Jueves</th>
+                                  <th>viernes</th>
+                                  <th>Sabado</th>
+                                  <th>domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">6.00am - 8.00am</th>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">10.00am - 12.00am</th>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Crossfit</h5>Adam Phillips</td>
+                                    <td></td> 
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">5.00pm - 7.00pm</th>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Crossfit</h5>Adam Phillips</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">7.00pm - 9.00pm</th>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td><h5>Levantamiento de pesas</h5>James Alien</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="class-powerlifting" class="container tab-pane fade p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-lg m-0">
+                            <thead class="bg-secondary text-white text-center">
+                                <tr>
+                                  <th>Hora</th>
+                                  <th>lunes</th>
+                                  <th>martes</th>
+                                  <th>Miercoles</th>
+                                  <th>Jueves</th>
+                                  <th>viernes</th>
+                                  <th>Sabado</th>
+                                  <th>domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">6.00am - 8.00am</th>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Power Lifting</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">10.00am - 12.00am</th>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Power Lifting</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td> 
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">5.00pm - 7.00pm</th>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Power Lifting</h5>James Alien</td>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-secondary text-white align-middle">7.00pm - 9.00pm</th>
+                                    <td></td>
+                                    <td><h5>Cardio</h5>John Deo</td>
+                                    <td></td>
+                                    <td><h5>Crossfit</h5>Adam Phillips</td>
+                                    <td></td>
+                                    <td class="bg-primary text-white"><h5 class="text-white">Power Lifting</h5>James Alien</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del horario de clases -->
+
+
+    <!-- Inicio del cálculo del IMC -->
+    <div class="container-fluid position-relative bmi my-5">
+        <div class="container">
+            <div class="row px-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="pr-md-3 d-none d-md-block">
+                        <h4 class="text-primary">Índice de masa corporal </h4>
+                        <h4 class="display-4 text-white font-weight-bold mb-4">¿Qué es el IMC?</h4>
+                        <p class="m-0 text-white">Vero elitr lorem magna justo magna justo at justo est ipsum sed clita lorem dolor ipsum sed. Lorem sea lorem vero. Sanct dolor clita clita rebum kasd magna erat diam</p>
+                    </div>
+                </div>
+                <div class="col-md-6 bg-secondary py-5">
+                    <div class="py-5 px-3">
+                        <h1 class="mb-4 text-white">Calcula tu IMC</h1>
+                        <form>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Weight (KG)">
+                                </div>
+                                <div class="col form-group">
+                                    <input type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Height (CM)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Age">
+                                </div>
+                                <div class="col form-group">
+                                    <select class="custom-select custom-select-lg bg-dark text-muted">
+                                        <option>género</option>
+                                        <option>masculino</option>
+                                        <option>Femenino</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="button" class="btn btn-lg btn-block btn-dark border-light"
+                                        value="Calculate Now">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del cálculo del IMC -->
+
+
+    <!-- Inicio del equipo -->
+    <div class="container pt-5 team">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">Nuestros entrenadores</h4>
+            <h4 class="display-4 font-weight-bold">Conoce a nuestros entrenadores expertos</h4>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="card border-0 bg-secondary text-center text-white">
+                    <img class="card-img-top" src="img/team-1.jpg" alt="">
+                    <div class="card-social d-flex align-items-center justify-content-center">
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h4 class="card-title text-primary">Nombre del entrenador</h4>
+                        <p class="card-text">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="card border-0 bg-secondary text-center text-white">
+                    <img class="card-img-top" src="img/team-2.jpg" alt="">
+                    <div class="card-social d-flex align-items-center justify-content-center">
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h4 class="card-title text-primary">Nombre del entrenador</h4>
+                        <p class="card-text">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="card border-0 bg-secondary text-center text-white">
+                    <img class="card-img-top" src="img/team-3.jpg" alt="">
+                    <div class="card-social d-flex align-items-center justify-content-center">
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h4 class="card-title text-primary">Nombre del entrenador</h4>
+                        <p class="card-text">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="card border-0 bg-secondary text-center text-white">
+                    <img class="card-img-top" src="img/team-4.jpg" alt="">
+                    <div class="card-social d-flex align-items-center justify-content-center">
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h4 class="card-title text-primary">Nombre del entrenador</h4>
+                        <p class="card-text">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <!-- Fin del equipo -->
+
+
+  <!-- Inicio del testimonio -->
+    <div class="container-fluid position-relative testimonial my-5">
+        <div class="container">
+            <div class="row px-3 align-items-center">
+                <div class="col-md-6 bg-secondary">
+                    <div class="d-flex align-items-center px-3" style="min-height: 450px;">
+                        <div id="carouselId" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carouselId" data-slide-to="0" class="active"></li>
+                                <li data-target="#carouselId" data-slide-to="1"></li>
+                                <li data-target="#carouselId" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active">
+                                    <div class="d-flex align-items-center mb-4 text-white">
+                                        <img width="80" height="80" class="rounded-circle bg-dark p-2" src="img/testimonial-1.jpg" alt="Image">
+                                        <div class="pl-4">
+                                            <h4 class="text-primary">Marcus Smith</h4>
+                                            <p class="m-0">no hace nada</p>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial-text position-relative border bg-dark text-white mb-5 p-4">
+                                        Sed ea amet kasd elitr stet nonumy, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolores tempor voluptua ipsum sanctus clita
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="d-flex align-items-center mb-4 text-white">
+                                        <img width="80" height="80" class="rounded-circle bg-dark p-2" src="img/testimonial-2.jpg" alt="Image">
+                                        <div class="pl-4">
+                                            <h4 class="text-primary">Elver Galarga</h4>
+                                            <p class="m-0">mas flojo que la palabra</p>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial-text position-relative border bg-dark text-white mb-5 p-4">
+                                        Sed ea amet kasd elitr stet nonumy, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolores tempor voluptua ipsum sanctus clita
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="d-flex align-items-center mb-4 text-white">
+                                        <img width="80" height="80" class="rounded-circle bg-dark p-2" src="img/testimonial-3.jpg" alt="Image">
+                                        <div class="pl-4">
+                                            <h4 class="text-primary">chin chan</h4>
+                                            <p class="m-0">Trabaja en Tem</p>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial-text position-relative border bg-dark text-white mb-5 p-4">
+                                        Sed ea amet kasd elitr stet nonumy, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolores tempor voluptua ipsum sanctus clita
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="pl-md-3 d-none d-md-block">
+                        <h4 class="text-primary">testimonio</h4>
+                        <h4 class="display-4 mb-4 text-white font-weight-bold">¿Qué dicen nuestros clientes?</h4>
+                        <p class="m-0 text-white">Vero elitr lorem magna justo magna justo at justo est ipsum sed clita lorem dolor ipsum sed. Lorem sea lorem vero. Sanct dolor clita clita rebum kasd magna erat diam</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <!-- Fin del testimonio -->
+
+
+  <!-- Inicio del blog -->
+    <div class="container pt-5">
+    <div class="d-flex flex-column text-center mb-5">
+        <h4 class="text-primary font-weight-bold">Nuestro blog</h4>
+        <h4 class="display-4 font-weight-bold">Últimos artículos</h4>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-5 blog-item">
+            <img class="img-fluid mb-4" src="img/blog-1.jpg" alt="Consejos para entrenar mejor">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-flex flex-column align-items-center justify-content-center rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                    <small>01</small>
+                    <strong class="text-uppercase m-0 text-white">Jan</strong>
+                    <small>2025</small>
+                </div>
+                <div class="pl-3">
+                    <h3 class="font-weight-bold">5 consejos para mejorar tu entrenamiento</h3>
+                    <div class="d-flex">
+                        <small class="mr-2 text-muted"><i class="fa fa-user"></i> Admin</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-folder"></i> Entrenamiento</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-comments"></i> 15 Comentarios</small>
+                    </div>
+                </div>
+            </div>
+            <p>Descubre cómo pequeños ajustes en tu rutina pueden generar grandes resultados. Desde la técnica hasta el descanso, todo cuenta para avanzar con seguridad y eficacia.</p>
+            <a class="btn btn-outline-primary mt-2 px-3" href="">Leer más <i class="fa fa-angle-right"></i></a>
+        </div>
+
+        <div class="col-lg-6 mb-5 blog-item">
+            <img class="img-fluid mb-4" src="img/blog-2.jpg" alt="Alimentación fitness">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-flex flex-column align-items-center justify-content-center rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                    <small>01</small>
+                    <strong class="text-uppercase m-0 text-white">Jan</strong>
+                    <small>2025</small>
+                </div>
+                <div class="pl-3">
+                    <h3 class="font-weight-bold">Alimentación inteligente para ganar músculo</h3>
+                    <div class="d-flex">
+                        <small class="mr-2 text-muted"><i class="fa fa-user"></i> Admin</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-folder"></i> Nutrición</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-comments"></i> 12 Comentarios</small>
+                    </div>
+                </div>
+            </div>
+            <p>Conoce qué alimentos priorizar, cómo repartir tus comidas y qué errores evitar para optimizar tu crecimiento muscular sin perder energía.</p>
+            <a class="btn btn-outline-primary mt-2 px-3" href="">Leer más <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+</div>
+   <!-- Fin del blog -->
+
+
+  <!-- Inicio del pie de página -->
+    <div class="footer container-fluid mt-5 py-5 px-sm-3 px-md-5 text-white">
+        <div class="row pt-5">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Ponte en contacto con nosotros</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces rápidos</h4>
+                <div class="d-flex flex-column justify-content-start">
+                  <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                  <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
+                  <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                  <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contacta con nosotros</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Enlaces populares</h4>
+                <div class="d-flex flex-column justify-content-start">
+                    <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                    <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
+                    <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                    <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contacta con nosotros</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-primary mb-4">Horario de apertura</h4>
+                <h5 class="text-white">Lunes - Viernes</h5>
+                <p>8.00 AM - 8.00 PM</p>
+                <h5 class="text-white">Sábado - Domingo</h5>
+                <p>2.00 PM - 8.00 PM</p>
+            </div>
+        </div>
+        <div class="container border-top border-dark pt-5">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-white font-weight-bold" href="#">El nombre de su sitio</a>. Todos los derechos reservados. Diseño propio.
+                <a class="text-white font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
+            </p>
+        </div>
+    </div>
+    <!-- Fin del pie de página -->
+     
+   <!-- Volver arriba -->
+    <a href="#" class="btn btn-outline-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- chatbot -->
+         <!-- Botón Flotante -->
+    <button id="chat-toggle">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
+        <div class="bot-notification">¿Necesitas ayuda?</div>
+    </button>
+
+    <!-- Muestra la notificacion para el audio -->
+    <div id="voiceTip" class="voice-tip hidden">
+        <span class="arrow-down"></span>
+      </div>
+
+    <!-- Ventana del Chat -->
+    <div id="chat-window">
+        <div id="chat-header">
+            <div class="header-title">🤖 Asistente Fitzone</div>
+            <div class="header-controls">
+                <button id="voice-toggle" class="voice-button">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="close-chat" class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="chat-body"></div>
+        <div id="chat-input">
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+
+
+    <!-- Bibliotecas de JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+
+
+   <!-- Plantilla Javascript -->
+    <script src="js/main.js"></script>
+    <scrip th:src="@{/js/main.js}"></script>
+<!-- Home efectos prinsipales de la pagina -->
+    <scrip th:src="@{/js/home.js}"></script>
+
+
+</body>
+</html>

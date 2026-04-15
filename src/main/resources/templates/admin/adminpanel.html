@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - GymFit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/adminpanel.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .users-table,
+        .anuncios-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table th,
+        .users-table td,
+        .anuncios-table th,
+        .anuncios-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .users-table th,
+        .anuncios-table th {
+            background: #f5f5f5;
+        }
+
+        .btn {
+            background: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #285b9a;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .sidebar .active {
+            background: #e3e6ee;
+        }
+
+        .anuncio-img {
+            height: 60px;
+            max-width: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .anuncio-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .anuncio-form input,
+        .anuncio-form textarea {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .anuncio-form label {
+            font-weight: bold;
+        }
+
+        .anuncio-form>div {
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .anuncio-form button {
+            align-self: flex-end;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="/marcas/logo_fitzone.jpg" alt="GymFit Logo">
+                <h2>GymFit</h2>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li class="active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Usuarios</span>
+                    </li>
+                    <li data-section="predictions">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Predicciones</span>
+                    </li>
+                    <li data-section="promotions">
+                        <i class="fas fa-percent"></i>
+                        <span>Promociones</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Admin&size=50" alt="Admin Avatar">
+                <div>
+                    <h4>Admin Nombre</h4>
+                    <p>Administrador</p>
+                </div>
+            </div>
+
+            <form id="logoutForm" action="/logout" method="post" style="display: none;">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            </form>
+
+            <div class="logout">
+                <button onclick="confirmLogout()" class="btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+
+            <script>
+                function confirmLogout() {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "¿Deseas cerrar sesión?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, cerrar sesión',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Enviar el formulario de logout
+                            document.getElementById('logoutForm').submit();
+                        }
+                    });
+                }
+            </script>
+
+            <script>
+                function logout() {
+                    localStorage.removeItem("jwtToken"); // Borra el token
+                    window.location.href = "/login";     // Redirige al login
+                }
+            </script>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <div class="top-bar-actions">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="message">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile">
+                        <img src="https://ui-avatars.com/api/?name=User&size=40" alt="Profile">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h1>Dashboard General</h1>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Miembros</h3>
+                            <p id="totalUsuarios">0</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ingresos Mes</h3>
+                            <p id="ingresosMes">$0</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> 8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon new">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Nuevos Miembros</h3>
+                            <p id="nuevosMiembros">0</p>
+                            <span class="trend down"><i class="fas fa-arrow-down"></i> 3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon cancel">
+                            <i class="fas fa-user-minus"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Cancelaciones</h3>
+                            <p id="cancelaciones">0</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-stats mt-4">
+                    <div class="stat-card">
+                        <div class="stat-icon trainers">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Entrenadores</h3>
+                            <p id="totalEntrenadores">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon admins">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Admins</h3>
+                            <p id="totalAdmins">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon classes">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Clases</h3>
+                            <p id="totalClases">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Predicciones Section -->
+            <section id="predictions" class="content-section">
+                <h1>Predicción de Cancelación de Membresía</h1>
+                <div class="prediction-filters"
+                    style="display:flex; gap:12px; align-items:center; margin-bottom: 12px;">
+                    <button id="btnPredecir" class="btn btn-primary">Predecir todos los usuarios</button>
+                    <select id="filtroPrediccion" class="form-control" style="max-width: 180px;">
+                        <option value="todos">Todos</option>
+                        <option value="cancelar">Solo van a cancelar</option>
+                        <option value="no_cancelar">Solo NO cancelan</option>
+                    </select>
+                    <label style="margin-left:8px; font-weight:500;">Filtrar por %:</label>
+                    <input type="range" id="filtroPorcentaje" min="0" max="100" value="0" step="1" style="width:120px;">
+                    <span id="valorPorcentaje" style="width:38px; display:inline-block;">0%</span>
+                </div>
+                <div class="predicciones-panel"
+                    style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 0; max-height: 420px; overflow: hidden;">
+                    <div style="height:420px; overflow-y:auto;" id="listaPredicciones"></div>
+                </div>
+            </section>
+
+            <style>
+                .predicciones-panel table {
+                    width: 100%;
+                    min-width: 600px;
+                    border-collapse: collapse;
+                }
+
+                .predicciones-panel th,
+                .predicciones-panel td {
+                    padding: 10px 14px;
+                    border-bottom: 1px solid #ececec;
+                    text-align: left;
+                }
+
+                .predicciones-panel th {
+                    position: sticky;
+                    top: 0;
+                    background: #f7f7fa;
+                    z-index: 2;
+                }
+
+                .predicciones-panel tr.cancelar td {
+                    background: #ffeaea;
+                    color: #c62828;
+                    font-weight: bold;
+                }
+
+                .predicciones-panel tr.no-cancelar td {
+                    background: #e8f5e9;
+                    color: #388e3c;
+                    font-weight: 500;
+                }
+
+                .predicciones-panel tbody tr:hover {
+                    background: #f5f5f5;
+                }
+
+                /* barra scroll personalizada */
+                #listaPredicciones {
+                    scrollbar-width: thin;
+                    scrollbar-color: #3a7bd5 #f7f7fa;
+                }
+
+                #listaPredicciones::-webkit-scrollbar {
+                    width: 8px;
+                    background: #f7f7fa;
+                    border-radius: 6px;
+                }
+
+                #listaPredicciones::-webkit-scrollbar-thumb {
+                    background: #3a7bd5;
+                    border-radius: 6px;
+                }
+            </style>
+
+            <!-- USUARIOS SECCION -->
+            <section id="users" class="content-section">
+                <h1>Gestión de Usuarios</h1>
+
+                <!-- Formulario para agregar usuario -->
+                <form id="formNuevoUsuario" class="user-form">
+                    <div class="form-row">
+                        <label for="nombreUsuario">Nombre</label>
+                        <input required type="text" id="nombreUsuario" name="nombre">
+                    </div>
+                    <div class="form-row">
+                        <label for="correoUsuario">Correo</label>
+                        <input required type="email" id="correoUsuario" name="correo">
+                    </div>
+                    <div class="form-row">
+                        <label for="passwordUsuario">Contraseña</label>
+                        <input required type="text" id="passwordUsuario" name="password">
+                    </div>
+                    <div class="form-row">
+                        <label for="rolUsuario">Rol</label>
+                        <select id="rolUsuario" name="rol" required>
+                            <option value="USER">Usuario</option>
+                            <option value="ENTRENADOR">Entrenador</option>
+                            <option value="ADMIN">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-row button-row">
+                        <button type="submit">Agregar Usuario</button>
+                    </div>
+                </form>
+
+                <!-- Filtro de roles -->
+                <div class="filter-row">
+                    <label for="filtroRol">Filtrar por rol:</label>
+                    <select id="filtroRol">
+                        <option value="todos">Todos</option>
+                        <option value="usuario">Usuario</option>
+                        <option value="ENTRENADOR">Entrenador</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+
+                <!-- Tabla de usuarios -->
+                <div id="tablaUsuarios"></div>
+            </section>
+
+
+            <!-- PROMOCIONES SECCION -->
+            <section id="promotions" class="content-section">
+                <h1>Promociones y Anuncios</h1>
+                <!-- Formulario para agregar anuncio -->
+                <form id="formAnuncio" class="anuncio-form" enctype="multipart/form-data">
+                    <div>
+                        <label for="tituloAnuncio">Título</label>
+                        <input required type="text" id="tituloAnuncio" name="titulo">
+                    </div>
+                    <div>
+                        <label for="descripcionAnuncio">Descripción</label>
+                        <textarea required id="descripcionAnuncio" name="descripcion"></textarea>
+                    </div>
+                    <div>
+                        <label for="fechaInicio">Fecha Inicio</label>
+                        <input required type="date" id="fechaInicio" name="fechaInicio">
+                    </div>
+                    <div>
+                        <label for="fechaFin">Fecha Fin</label>
+                        <input required type="date" id="fechaFin" name="fechaFin">
+                    </div>
+                    <div>
+                        <label for="imagenAnuncio">Imagen (opcional)</label>
+                        <input type="file" id="imagenAnuncio" name="imagen" accept="image/*">
+                    </div>
+                    <div style="align-self: flex-end;">
+                        <button type="submit" class="btn">Agregar Anuncio</button>
+                    </div>
+                </form>
+                <h2>Lista de Anuncios</h2>
+                <div id="tablaAnuncios"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+
+        // =========== GESTIÓN DE USUARIOS ===========
+
+        // Cargar lista de usuarios
+        let usuariosData = [];
+
+        function cargarUsuarios() {
+            fetch("http://localhost:8080/api/usuarios/listar")
+                .then(res => res.json())
+                .then(data => {
+                    usuariosData = data;
+                    renderTablaUsuarios();
+                })
+                .catch(err => {
+                    document.getElementById("tablaUsuarios").innerHTML = "<span style='color:red'>No se pudieron cargar los usuarios.</span>";
+                });
+        }
+
+        function renderTablaUsuarios() {
+            const filtroRol = document.getElementById("filtroRol").value;
+            let filtrados = usuariosData;
+            if (filtroRol !== "todos") {
+                filtrados = usuariosData.filter(u => {
+                    let rol = (u.rol || "").toUpperCase();
+                    if (filtroRol === "usuario") return rol === "USUARIO" || rol === "USER";
+                    return rol === filtroRol.toUpperCase();
+                });
+            }
+            let html = `<table class="users-table">
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Contraseña</th>
+            <th>Rol</th>
+        </tr>`;
+            if (filtrados.length === 0) {
+                html += `<tr><td colspan="4" style="text-align:center; color:#888;">Sin resultados</td></tr>`;
+            } else {
+                filtrados.forEach(user => {
+                    html += `<tr>
+                <td>${user.nombre}</td>
+                <td>${user.correo}</td>
+                <td>${user.password}</td>
+                <td>${user.rol}</td>
+            </tr>`;
+                });
+            }
+            html += `</table>`;
+            document.getElementById("tablaUsuarios").innerHTML = html;
+        }
+
+        document.getElementById("filtroRol").addEventListener("change", renderTablaUsuarios);
+
+        // Llama cargarUsuarios() al cargar la página:
+        window.addEventListener('DOMContentLoaded', cargarUsuarios);
+
+        document.getElementById("filtroRol").addEventListener("change", renderTablaUsuarios);
+        // Agregar usuario
+        document.getElementById("formNuevoUsuario").onsubmit = function (e) {
+            e.preventDefault();
+            const form = document.getElementById("formNuevoUsuario");
+            const nuevoUsuario = {
+                nombre: form.nombre.value,
+                correo: form.correo.value,
+                password: form.password.value,
+                rol: form.rol.value
+            };
+            fetch("http://localhost:8080/api/usuarios/agregar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevoUsuario)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        form.reset();
+                        cargarUsuarios();
+                    } else {
+                        alert("No se pudo agregar el usuario.");
+                    }
+                });
+        };
+
+        // Cargar usuarios al entrar a la sección de usuarios
+        document.querySelector('li[data-section="users"]').addEventListener("click", cargarUsuarios);
+
+        // Si ya está activa la sección de users, cargarla al inicio
+        if (document.getElementById("users").classList.contains("active")) cargarUsuarios();
+
+        // ...tu JS existente abajo...
+    </script>
+
+    <script>
+        // Estadísticas Dashboard
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("jwtToken");
+            fetch("http://localhost:8080/api/admin/estadisticas", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("totalUsuarios").textContent = data.usuarios ?? 0;
+                    document.getElementById("totalEntrenadores").textContent = data.entrenadores ?? 0;
+                    document.getElementById("totalAdmins").textContent = data.admins ?? 0;
+                    document.getElementById("totalClases").textContent = data.clases ?? 0;
+                    document.getElementById("ingresosMes").textContent = "$" + (data.ingresosMes ?? 0);
+                    document.getElementById("nuevosMiembros").textContent = data.nuevosMiembros ?? 0;
+                    document.getElementById("cancelaciones").textContent = data.cancelaciones ?? 0;
+                })
+                .catch(err => console.error("❌ Error al obtener estadísticas:", err));
+        });
+
+        // Navegación Menú Lateral
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuItems = document.querySelectorAll('.menu ul li[data-section]');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function showSection(sectionId) {
+                contentSections.forEach(section => section.classList.remove('active'));
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.add('active');
+            }
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    showSection(this.getAttribute('data-section'));
+                });
+            });
+        });
+
+        // Predicción de Cancelaciones al presionar botón
+        let prediccionesData = [];
+
+        document.getElementById("btnPredecir").onclick = function () {
+            const tabla = document.getElementById("listaPredicciones");
+            tabla.innerHTML = "<div style='padding:20px; text-align:center;'>Cargando predicciones...</div>";
+            fetch("http://localhost:8080/api/predict/cancelaciones")
+                .then(res => res.json())
+                .then(data => {
+                    prediccionesData = data;
+                    renderTablaPredicciones();
+                })
+                .catch(err => {
+                    tabla.innerHTML = "<span style='color:red; padding:20px; display:block;'>No se pudieron cargar las predicciones.</span>";
+                });
+        };
+        // Renderizar tabla de predicciones
+
+        function normalizarPrediccion(valor) {
+            if (!valor) return "";
+            return valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+        }
+
+        function renderTablaPredicciones() {
+            const tipo = document.getElementById("filtroPrediccion").value;
+            const pctMin = parseInt(document.getElementById("filtroPorcentaje").value, 10);
+
+            let filtrados = prediccionesData.filter(u => {
+                const pct = (u.probabilidad_cancelar ?? 0) * 100;
+                let pasa = pct >= pctMin;
+                const pred = normalizarPrediccion(u.prediccion); // ahora será "si" o "no"
+                if (tipo === 'cancelar') pasa = pasa && pred === "si";
+                if (tipo === 'no_cancelar') pasa = pasa && pred === "no";
+                return pasa;
+            });
+
+            let html = `<table class="users-table">
+        <tr>
+            <th>Usuario</th>
+            <th>Probabilidad de Cancelar (%)</th>
+            <th>Predicción</th>
+        </tr>`;
+            if (filtrados.length === 0) {
+                html += `<tr><td colspan="3" style="text-align:center; color:#888;">Sin resultados</td></tr>`;
+            } else {
+                filtrados.forEach(u => {
+                    html += `<tr>
+                <td>${u.nombre ?? u.usuarioId}</td>
+                <td>${(u.probabilidad_cancelar * 100).toFixed(1)}%</td>
+                <td>${u.prediccion}</td>
+            </tr>`;
+                });
+            }
+            html += `</table>`;
+            document.getElementById("listaPredicciones").innerHTML = html;
+        }
+        document.getElementById("filtroPrediccion").addEventListener("change", renderTablaPredicciones);
+        document.getElementById("filtroPorcentaje").addEventListener("input", function () {
+            document.getElementById("valorPorcentaje").textContent = this.value + "%";
+            renderTablaPredicciones();
+        });
+
+        // =======================
+        // ANUNCIOS/PROMOCIONES JS
+        // =======================
+
+        function cargarAnuncios() {
+            fetch("http://localhost:8080/api/anuncios/listar")
+                .then(res => res.json())
+                .then(data => {
+                    let html = `<table class="anuncios-table">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Acción</th>
+                </tr>`;
+                    data.forEach(anuncio => {
+                        html += `<tr>
+                    <td>${anuncio.imagenUrl ? `<img class="anuncio-img" src="http://localhost:8080${anuncio.imagenUrl}" alt="imagen anuncio">` : ''}</td>
+                    <td>${anuncio.titulo}</td>
+                    <td>${anuncio.descripcion}</td>
+                    <td>${anuncio.fechaInicio ?? ''}</td>
+                    <td>${anuncio.fechaFin ?? ''}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="eliminarAnuncio('${anuncio.id}')">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>`;
+                    });
+                    html += `</table>`;
+                    document.getElementById("tablaAnuncios").innerHTML = html;
+                })
+                .catch(err => {
+                    document.getElementById("tablaAnuncios").innerHTML = "<span style='color:red'>No se pudieron cargar los anuncios.</span>";
+                });
+        }
+
+        function eliminarAnuncio(id) {
+            if (!confirm("¿Seguro que deseas eliminar este anuncio?")) return;
+            fetch(`http://localhost:8080/api/anuncios/eliminar/${id}`, {
+                method: "DELETE"
+            })
+                .then(res => {
+                    if (res.ok) cargarAnuncios();
+                    else alert("No se pudo eliminar el anuncio.");
+                });
+        }
+
+        // Subir anuncio
+        document.getElementById("formAnuncio").onsubmit = function (e) {
+            e.preventDefault();
+            const form = document.getElementById("formAnuncio");
+            const formData = new FormData(form);
+
+            // Para enviar el objeto anuncio como JSON en multipart
+            const anuncioObj = {
+                titulo: form.titulo.value,
+                descripcion: form.descripcion.value,
+                fechaInicio: form.fechaInicio.value,
+                fechaFin: form.fechaFin.value
+            };
+            formData.set("anuncio", new Blob([JSON.stringify(anuncioObj)], { type: "application/json" }));
+
+            fetch("http://localhost:8080/api/anuncios/agregar", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => {
+                    if (res.ok) {
+                        form.reset();
+                        cargarAnuncios();
+                    } else {
+                        alert("No se pudo agregar el anuncio.");
+                    }
+                });
+        };
+
+        // Cargar anuncios al entrar a la sección de promociones
+        document.addEventListener("DOMContentLoaded", () => {
+            // Carga anuncios si está activa la sección al cargar
+            if (document.getElementById("promotions").classList.contains("active")) cargarAnuncios();
+            // Carga anuncios al hacer clic en el menú lateral
+            document.querySelector('li[data-section="promotions"]').addEventListener("click", cargarAnuncios);
+        });
+
+    </script>
+
+</body>
+
+</html>
