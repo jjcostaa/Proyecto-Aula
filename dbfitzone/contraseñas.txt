@@ -1,0 +1,22 @@
+usuarios 
+---------------------------------------
+stevenpc321@gmail.com   contraseña:12345678
+
+
+
+
+
+---------------------------------------
+administradores 
+---------------------------------------
+
+administracion@gimfitzone.com  contraseña:12345678
+
+
+
+
+
+---------------------------------------
+entrenadores
+---------------------------------------
+carlos.entrena@example.com    contraseña:12345678

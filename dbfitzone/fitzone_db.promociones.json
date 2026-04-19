@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "692777e7797d5b0843e62b17"
+  },
+  "titulo": "proteina",
+  "descripcion": "proteina muy eficaz para el crecimiento de los musculos",
+  "imagenUrl": "/api/anuncios/imagen/b480cda7-f686-4a6f-809f-49c80c6c6574_Vista_Logica_FitZone.png",
+  "fechaInicio": "2025-11-26",
+  "fechaFin": "2025-11-27",
+  "_class": "com.fitzone.fitzonev2.model.Anuncio"
+}]

@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "6823a51046699d2bcc88ba07"
+  },
+  "entrenadorId": "6822fd9f887f0127db8bbb66",
+  "nombreEntrenador": "Miguel Entrena",
+  "nombreClase": "prueba 11",
+  "descripcion": "prueba 11",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+},
+{
+  "_id": {
+    "$oid": "68242927d6376f07e6e309e9"
+  },
+  "entrenadorId": "681d35095dfed1fe175b2a82",
+  "nombreEntrenador": "Carlos Entrena",
+  "nombreClase": "prueba 110",
+  "descripcion": "prueba 110",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+},
+{
+  "_id": {
+    "$oid": "6824f496d20d512231acfc6a"
+  },
+  "entrenadorId": "681d35095dfed1fe175b2a82",
+  "nombreEntrenador": "Carlos Entrena",
+  "nombreClase": "2323",
+  "descripcion": "3232",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+},
+{
+  "_id": {
+    "$oid": "68264a1e22200b5b320a8b32"
+  },
+  "entrenadorId": "6822fd9f887f0127db8bbb66",
+  "nombreEntrenador": "Miguel Entrena",
+  "nombreClase": "prueba 1",
+  "descripcion": "prueba 1",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+},
+{
+  "_id": {
+    "$oid": "691de4a06097dc0df8983227"
+  },
+  "entrenadorId": "681d35095dfed1fe175b2a82",
+  "nombreEntrenador": "Carlos Entrena",
+  "nombreClase": "prueba 10",
+  "descripcion": "prueba11",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+},
+{
+  "_id": {
+    "$oid": "691de4dd6097dc0df8983228"
+  },
+  "entrenadorId": "681d35095dfed1fe175b2a82",
+  "nombreEntrenador": "Carlos Entrena",
+  "nombreClase": "clase de peso",
+  "descripcion": "prueba de las clases ",
+  "_class": "com.fitzone.fitzonev2.model.Clase"
+}]

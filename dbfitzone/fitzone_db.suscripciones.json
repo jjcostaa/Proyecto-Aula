@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "6824f4b0d20d512231acfc6c"
+  },
+  "usuarioId": "682402ba93786254df28fd6a",
+  "claseId": "6823a51046699d2bcc88ba07",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+},
+{
+  "_id": {
+    "$oid": "6824f4b1d20d512231acfc6d"
+  },
+  "usuarioId": "682402ba93786254df28fd6a",
+  "claseId": "68242927d6376f07e6e309e9",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+},
+{
+  "_id": {
+    "$oid": "6824f4b2d20d512231acfc6e"
+  },
+  "usuarioId": "682402ba93786254df28fd6a",
+  "claseId": "6824f490d20d512231acfc68",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+},
+{
+  "_id": {
+    "$oid": "6824f4b3d20d512231acfc6f"
+  },
+  "usuarioId": "682402ba93786254df28fd6a",
+  "claseId": "6824f494d20d512231acfc69",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+},
+{
+  "_id": {
+    "$oid": "6923328d653126529696752f"
+  },
+  "usuarioId": "6812a1b5d9a4672f20858a61",
+  "claseId": "6824f496d20d512231acfc6a",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+},
+{
+  "_id": {
+    "$oid": "6923328e6531265296967530"
+  },
+  "usuarioId": "6812a1b5d9a4672f20858a61",
+  "claseId": "68264a1e22200b5b320a8b32",
+  "_class": "com.fitzone.fitzonev2.model.Suscripcion"
+}]

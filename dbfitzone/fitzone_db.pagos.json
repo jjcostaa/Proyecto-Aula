@@ -1,0 +1,26 @@
+[{
+  "_id": {
+    "$oid": "68250b22f2cb0039cf7c4854"
+  },
+  "monto": 150000,
+  "usuarioId": "6812a1b5d9a4672f20858a61",
+  "nombre": "stiven",
+  "membresia": "Elite",
+  "fecha": {
+    "$date": "2025-05-14T21:29:06.645Z"
+  },
+  "_class": "com.fitzone.fitzonev2.model.Pago"
+},
+{
+  "_id": {
+    "$oid": "6826429e64bbd240b5be8a0f"
+  },
+  "monto": 150000,
+  "usuarioId": "681989b62bd227ce3021f705",
+  "nombre": "Administrador",
+  "membresia": "Elite",
+  "fecha": {
+    "$date": "2025-05-15T19:38:06.657Z"
+  },
+  "_class": "com.fitzone.fitzonev2.model.Pago"
+}]
