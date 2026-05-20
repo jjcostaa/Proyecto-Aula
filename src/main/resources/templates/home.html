@@ -11,6 +11,7 @@
     <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.min.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 
 </head>
 <body class="bg-white">
@@ -871,6 +872,11 @@
 <!-- Home efectos prinsipales de la pagina -->
     <scrip th:src="@{/js/home.js}"></script>
 
+
+    <script th:src="@{/js/navbar.js}"></script>
+
+    <!-- FitBot Widget -->
+    <div th:replace="~{fragments/chatbot :: chatbot-widget}"></div>
 
 </body>
 </html>

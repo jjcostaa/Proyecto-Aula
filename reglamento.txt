@@ -1,0 +1,20 @@
+======================================================
+         REGLAMENTO Y NORMAS DE NEGOCIO - FITZONE
+======================================================
+
+1. ROLES Y ACCESOS
+- El sistema restringe estrictamente el acceso mediante JWT. El acceso al Panel de Administración (`/admin/*`) es exclusivo para usuarios registrados con el rol de Administrador.
+- Únicamente los Administradores tienen permisos para ejecutar los modelos de Optimización Matemática y visualizar las Predicciones de Cancelación de Membresías.
+- Los usuarios regulares (Clientes) solo tienen acceso a su panel personal (`/usuario/*`), a la visualización de clases y a la interacción con el asistente de Inteligencia Artificial (FitBot).
+
+2. SEGURIDAD Y PRIVACIDAD
+- Todas las contraseñas de los usuarios (tanto administradores como clientes) DEBEN estar encriptadas (hashing) antes de ser persistidas en la base de datos MongoDB.
+- Bajo ninguna circunstancia las llaves maestras de terceros (Ej: GROQ_API_KEY) pueden ser hardcodeadas en el código fuente; su gestión es exclusiva por Variables de Entorno.
+
+3. REGLAS OPERATIVAS DEL GIMNASIO
+- Optimización de Recursos: Las asignaciones de los instructores a las clases deben cumplir estrictamente con el modelo de optimización. Ningún instructor puede superar su jornada laboral máxima (Capacidad en Horas).
+- Gestión de Membresías: El motor de predicción de la aplicación debe alertar al administrador sobre cualquier usuario cuya "probabilidad de cancelar" supere los umbrales de riesgo definidos, con el fin de activar estrategias de retención.
+
+4. POLÍTICAS DE INTELIGENCIA ARTIFICIAL (FITBOT)
+- El asistente virtual FitBot está diseñado para resolver dudas exclusivas sobre horarios, rutinas, planes y nutrición básica relacionada con el gimnasio.
+- El consumo de la API de Groq por parte del Chatbot debe estar protegido contra saturación, respondiendo de forma asíncrona y limitando la cantidad excesiva de peticiones por usuario.

@@ -1,0 +1,61 @@
+<!-- FitBot Widget - Asistente Virtual FitZone -->
+<!-- Incluir en cualquier página con: th:replace="~{fragments/chatbot :: chatbot-widget}" -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- ===== CHATBOT WIDGET FRAGMENT ===== -->
+<div th:fragment="chatbot-widget">
+
+    <!-- Botón flotante -->
+    <button id="fitbot-toggle" aria-label="Abrir chat FitBot">
+        <span id="fitbot-badge"></span>
+        <i class="fitbot-icon-open">🤖</i>
+        <i class="fitbot-icon-close fa fa-times"></i>
+    </button>
+
+    <!-- Ventana del chat -->
+    <div id="fitbot-window" role="dialog" aria-label="Chat FitBot">
+
+        <!-- Header -->
+        <div id="fitbot-header">
+            <div class="fitbot-avatar">🏋️</div>
+            <div class="fitbot-info">
+                <h5>FitBot</h5>
+                <small>
+                    <span class="fitbot-status-dot"></span>En línea · Asistente FitZone
+                </small>
+            </div>
+        </div>
+
+        <!-- Mensajes -->
+        <div id="fitbot-messages" aria-live="polite"></div>
+
+        <!-- Sugerencias rápidas -->
+        <div id="fitbot-suggestions"></div>
+
+        <!-- Input -->
+        <div id="fitbot-input-area">
+            <textarea
+                id="fitbot-input"
+                rows="1"
+                placeholder="Escribe tu pregunta..."
+                aria-label="Mensaje para FitBot"
+                maxlength="500"
+            ></textarea>
+            <button id="fitbot-send" aria-label="Enviar mensaje">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Scripts del chatbot -->
+    <script th:src="@{/js/chatbot.js}"></script>
+
+</div>
+<!-- ===== FIN CHATBOT WIDGET ===== -->
+
+</body>
+</html>

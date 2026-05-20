@@ -1,0 +1,301 @@
+/* ================================================
+   FITZONE NAVBAR — TRANSPARENT + HIDE ON SCROLL
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap');
+
+:root {
+    --fz-orange: #FF5500;
+    --fz-bg-scrolled: rgba(5, 5, 14, 0.94);
+}
+
+/* ── Nav base: 100% transparente ──────────────── */
+nav.navbar.navbar-dark,
+nav.navbar.navbar-dark.fixed-top,
+.nav-bar nav.navbar {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    padding: 14px 36px !important;
+
+    /* Animación hide/show */
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+        transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.38s ease,
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        padding 0.35s ease,
+        box-shadow 0.4s ease;
+    will-change: transform, opacity;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estado: con fondo (al hacer scroll arriba) */
+nav.navbar.navbar-scrolled {
+    background: var(--fz-bg-scrolled) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 85, 0, 0.12) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+    padding: 8px 36px !important;
+}
+
+/* Estado: oculto (al hacer scroll abajo) */
+nav.navbar.navbar-hidden {
+    transform: translateY(-110%) !important;
+    opacity: 0 !important;
+}
+
+/* ── Logo ───*/
+.navbar-brand,
+.navbar-brand.d-flex {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+}
+
+nav.navbar img.logo-img,
+.navbar-brand img,
+nav.navbar>img {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: 2px solid rgba(255, 85, 0, 0.65) !important;
+    box-shadow: 0 0 14px rgba(255, 85, 0, 0.28), 0 0 0 0 var(--fz-orange);
+    margin: 0 14px 0 0 !important;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.1) rotate(-6deg);
+    box-shadow: 0 0 22px rgba(255, 85, 0, 0.55);
+}
+
+/* Texto del wordmark */
+.navbar-brand span,
+nav.navbar>div>h1,
+nav.navbar h1.font-weight-bold {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 19px !important;
+    letter-spacing: 2.5px !important;
+    text-transform: uppercase !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Subtítulo panel */
+nav.navbar>div>p {
+    font-size: 9px !important;
+    letter-spacing: 2px !important;
+    color: var(--fz-orange) !important;
+    text-transform: uppercase !important;
+    margin: 2px 0 0 !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+}
+
+/* ── Eliminar el bloque gris ──────── */
+.navbar-nav.bg-secondary,
+.navbar-nav.ml-auto.p-4.bg-secondary,
+div.navbar-nav.ml-auto.p-4.bg-secondary {
+    background: transparent !important;
+    padding: 0 6px !important;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* ── Links ─── */
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-nav .nav-item.nav-link {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 7px 13px !important;
+    border-radius: 8px;
+    letter-spacing: 0.2px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Quitar pseudo-elements anteriores */
+.navbar-dark .navbar-nav .nav-link::before,
+.navbar-dark .navbar-nav .nav-link::after {
+    display: none !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    text-shadow: none;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #fff !important;
+    background: rgba(255, 85, 0, 0.2) !important;
+    font-weight: 600 !important;
+    text-shadow: none;
+}
+
+/* ── Botón Cerrar Sesión — universal ─────────── */
+.navbar-dark .navbar-nav .btn-logout,
+.navbar-dark .navbar-nav a.btn-logout,
+nav.navbar .navbar-nav .btn-logout,
+nav.navbar .navbar-nav a.btn-logout,
+a.btn-logout.nav-link,
+a.nav-link.btn-logout {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    background: var(--fz-orange) !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 7px 20px !important;
+    margin-left: 8px;
+    box-shadow: 0 3px 14px rgba(255, 85, 0, 0.4);
+    transition: all 0.25s ease !important;
+    text-shadow: none !important;
+    /* Quitar override de text-primary */
+    -webkit-text-fill-color: #fff !important;
+}
+
+.navbar-dark .navbar-nav .btn-logout:hover,
+.navbar-dark .navbar-nav a.btn-logout:hover,
+nav.navbar .navbar-nav .btn-logout:hover,
+a.btn-logout.nav-link:hover,
+a.nav-link.btn-logout:hover {
+    background: #FF7700 !important;
+    box-shadow: 0 5px 22px rgba(255, 85, 0, 0.55) !important;
+    transform: translateY(-1px);
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+.navbar-dark .navbar-nav .btn-logout::before,
+.navbar-dark .navbar-nav .btn-logout::after,
+nav.navbar .navbar-nav .btn-logout::before,
+nav.navbar .navbar-nav .btn-logout::after,
+a.btn-logout.nav-link::before,
+a.btn-logout.nav-link::after {
+    display: none !important;
+}
+
+/* ── Dropdown ────────────────────────────────── */
+.navbar-dark .dropdown-toggle::after {
+    border-color: rgba(255, 255, 255, 0.55) transparent transparent !important;
+    margin-left: 5px;
+    vertical-align: 2px;
+}
+
+.dropdown-menu {
+    background: rgba(6, 6, 18, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 85, 0, 0.18) !important;
+    border-radius: 14px !important;
+    padding: 8px !important;
+    margin-top: 8px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+    animation: fz-dd-in 0.2s ease;
+}
+
+@keyframes fz-dd-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    border-radius: 9px !important;
+    padding: 9px 16px !important;
+    transition: all 0.18s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 85, 0, 0.12) !important;
+    color: #fff !important;
+}
+
+/* ── Toggler móvil ───────────────────────────── */
+.navbar-toggler {
+    border: 1.5px solid rgba(255, 85, 0, 0.5) !important;
+    border-radius: 10px !important;
+    padding: 6px 10px !important;
+    background: rgba(255, 85, 0, 0.06) !important;
+    transition: all 0.2s ease;
+}
+
+.navbar-toggler:hover {
+    background: rgba(255, 85, 0, 0.15) !important;
+}
+
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.2) !important;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,85,0,1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* ── Móvil ───────────────────────────────────── */
+@media (max-width: 991px) {
+
+    nav.navbar.navbar-dark,
+    nav.navbar.navbar-dark.fixed-top,
+    .nav-bar nav.navbar {
+        padding: 10px 18px !important;
+        background: rgba(4, 4, 12, 0.92) !important;
+        backdrop-filter: blur(14px) !important;
+    }
+
+    .navbar-nav.bg-secondary,
+    .navbar-nav.ml-auto.p-4.bg-secondary {
+        background: rgba(6, 6, 18, 0.97) !important;
+        border: 1px solid rgba(255, 85, 0, 0.15) !important;
+        border-radius: 14px !important;
+        padding: 10px 8px !important;
+        margin: 8px 0 14px !important;
+        gap: 3px;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        width: 100%;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+        width: 100%;
+        border-radius: 10px;
+        padding: 10px 14px !important;
+    }
+
+    .navbar-dark .navbar-nav .btn-logout {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 4px;
+        border-radius: 10px !important;
+        text-align: center;
+    }
+}

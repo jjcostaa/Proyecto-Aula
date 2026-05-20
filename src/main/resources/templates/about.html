@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
-    <title>Gymnast - Gym Website Template</title>
+    <title>FitZone - Sobre Nosotros</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free Website Template" name="keywords">
-    <meta content="Free Website Template" name="description">
+    <meta content="FitZone Gimnasio" name="keywords">
+    <meta content="Sobre Nosotros - FitZone" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link th:href="@{/img/Fitzone.png}" rel="icon">
 
-    <!-- Fuente Impresionante -->
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-   <!-- Fuente Flaticon -->
-    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+    <!-- Flaticon Font -->
+    <link th:href="@{/lib/flaticon/font/flaticon.css}" rel="stylesheet">
 
-    <!-- Hoja de estilos Bootstrap personalizada -->
-    <link href="css/style.min.css" rel="stylesheet">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     
 </head>
@@ -26,27 +27,31 @@
 <body class="bg-white">
     <!-- Inicio de la barra de navegación -->
     <div class="container-fluid p-0 nav-bar">
-        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
-            <a href="" class="navbar-brand">
-                <h1 class="m-0 display-4 font-weight-bold text-uppercase text-white">Gymnast</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 fixed-top">
+            <a th:href="@{/home}" class="navbar-brand d-flex align-items-center">
+                <img th:src="@{/img/Fitzone.png}" alt="FitZone Logo" style="height:42px;width:42px;border-radius:50%;object-fit:cover;">
+                <div style="margin-left:14px;">
+                    <h1 class="m-0 font-weight-bold text-uppercase text-white" style="font-size:19px;line-height:1;letter-spacing:2px;">FitZone</h1>
+                    <p class="mb-0" style="font-size:9px;color:#FF5500;letter-spacing:2px;text-transform:uppercase;">Tu gimnasio, tu comunidad</p>
+                </div>
             </a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav ml-auto p-4 bg-secondary">
-                    <a th:href="@{/home}" class="nav-item nav-link active">Inicio</a>
-                    <a th:href="@{/about}" class="nav-item nav-link">Sobre Nosotros</a>
-                    <a th:href="@{/feature}" class="nav-item nav-link">Características</a>
+                    <a th:href="@{/home}" class="nav-item nav-link">Inicio</a>
+                    <a th:href="@{/about}" class="nav-item nav-link active">Sobre Nosotros</a>
+                    <a th:href="@{/feature}" class="nav-item nav-link">Caracter&#237;sticas</a>
                     <a th:href="@{/class}" class="nav-item nav-link">Clases</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">P&#225;ginas</a>
                         <div class="dropdown-menu text-capitalize">
-                            <a th:href="@{/blog}" class="dropdown-item">Blog en Cuadrícula</a>
+                            <a th:href="@{/blog}" class="dropdown-item">Blog</a>
                             <a th:href="@{/single}" class="dropdown-item">Detalles del Blog</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <a th:href="@{/contact}" class="nav-item nav-link">Contacto</a>
                 </div>
             </div>
         </nav>
@@ -245,68 +250,18 @@
                 <p>2.00 PM - 8.00 PM</p>
             </div>
         </div>
-        <div class="container border-top border-dark pt-5">
-            <p class="m-0 text-center text-white">
-                &copy; <a class="text-white font-weight-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed by
-                <a class="text-white font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
-            </p>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    
-    <a href="#" class="btn btn-outline-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    <!-- chatbot -->
-         <!-- Botón Flotante -->
-    <button id="chat-toggle">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
-        <div class="bot-notification">¿Necesitas ayuda?</div>
-    </button>
-
-    <!-- Muestra la notificacion para el audio -->
-    <div id="voiceTip" class="voice-tip hidden">
-        🔈 Puedes activar la lectura de voz
-        <span class="arrow-down"></span>
-      </div>
-
-    <!-- Ventana del Chat -->
-    <div id="chat-window">
-        <div id="chat-header">
-            <div class="header-title">🤖 Asistente Fitzone</div>
-            <div class="header-controls">
-                <button id="voice-toggle" class="voice-button">
-                    <i class="fas fa-volume-up"></i>
-                </button>
-                <button id="close-chat" class="close-button">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-        <div id="chat-body"></div>
-        <div id="chat-input">
-            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
-            <button onclick="sendMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-
-    <script th:src="@{/js/chatbot.js}"></script>
-
-
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script th:src="@{/lib/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
+    <!-- FitBot Widget -->
+    <div th:replace="~{fragments/chatbot :: chatbot-widget}"></div>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+
 </body>
 
 </html>

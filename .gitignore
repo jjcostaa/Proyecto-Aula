@@ -34,3 +34,10 @@ build/
 
 # Ignorar modelos pesados
 src/main/resources/models/*.model
+
+# Seguridad - nunca subir archivos con claves
+.env
+*.env
+application-local.properties
+application-secret.properties
+secrets.properties

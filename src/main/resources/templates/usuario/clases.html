@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link th:href="@{/css/panelusuario.css}" rel="stylesheet" />
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -53,14 +54,13 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav ml-auto p-4 bg-secondary">
                     <a th:href="@{/userpanel}" class="nav-item nav-link">Panel Principal</a>
-                    <a th:href="@{/mis_clases}" class="nav-item nav-link">Mis Clases</a>
+                    <a th:href="@{/mis_clases}" class="nav-item nav-link active">Mis Clases</a>
                     <a th:href="@{/membresias}" class="nav-item nav-link">Membresías</a>
-                    <a href="#" class="nav-item nav-link">Mi Perfil</a>
                     <form id="logoutForm" action="/logout" method="post" style="display: none;">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     </form>
 
-                    <a href="#" class="nav-item nav-link text-primary" onclick="confirmLogout(); return false;">
+                    <a href="#" class="nav-item nav-link btn-logout" onclick="confirmLogout(); return false;">
                         Cerrar Sesión
                     </a>
 
@@ -1035,7 +1035,11 @@
         </div>
     </div>
 
-    <script th:src="@{/js/chatbot.js}"></script>
+    <!-- FitBot Widget -->
+    <div th:replace="~{fragments/chatbot :: chatbot-widget}"></div>
+
+    <script th:src="@{/js/navbar.js}"></script>
+
 </body>
 
 </html>

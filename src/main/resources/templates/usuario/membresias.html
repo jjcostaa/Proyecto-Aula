@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -12,6 +12,7 @@
     <link th:href="@{/css/panelusuario.css}" rel="stylesheet" />
     <link th:href="@{/css/membresias.css}" rel="stylesheet" />
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -55,12 +56,11 @@
                     <a th:href="@{/userpanel}" class="nav-item nav-link">Panel Principal</a>
                     <a th:href="@{/mis_clases}" class="nav-item nav-link">Mis Clases</a>
                     <a href="#" class="nav-item nav-link active">Membresías</a>
-                    <a href="#" class="nav-item nav-link">Mi Perfil</a>
                     <form id="logoutForm" action="/logout" method="post" style="display: none;">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     </form>
 
-                    <a href="#" class="nav-item nav-link text-primary" onclick="confirmLogout(); return false;">
+                    <a href="#" class="nav-item nav-link btn-logout" onclick="confirmLogout(); return false;">
                         Cerrar Sesión
                     </a>
 
@@ -584,43 +584,9 @@
     </div>
     <!-- Footer End -->
 
-    <!-- chatbot -->
-    <!-- Botón Flotante -->
-    <button id="chat-toggle">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
-        <div class="bot-notification">¿Necesitas ayuda?</div>
-    </button>
+    <!-- FitBot Widget -->
+    <div th:replace="~{fragments/chatbot :: chatbot-widget}"></div>
 
-    <!-- Muestra la notificacion para el audio -->
-    <div id="voiceTip" class="voice-tip hidden">
-        🔈 Puedes activar la lectura de voz
-        <span class="arrow-down"></span>
-    </div>
-
-    <!-- Ventana del Chat -->
-    <div id="chat-window">
-        <div id="chat-header">
-            <div class="header-title">🤖 Asistente Fitzone</div>
-            <div class="header-controls">
-                <button id="voice-toggle" class="voice-button">
-                    <i class="fas fa-volume-up"></i>
-                </button>
-                <button id="close-chat" class="close-button">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-        <div id="chat-body"></div>
-        <div id="chat-input">
-            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
-            <button onclick="sendMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-
-
-    <script th:src="@{/js/chatbot.js}"></script>
     <!-- Back to Top -->
     <a href="#" class="btn btn-outline-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
@@ -629,7 +595,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/membresias.js}"></script>
-    <!-- Custom Javascript -->
+    <script th:src="@{/js/navbar.js}"></script>
 </body>
 
 </html>

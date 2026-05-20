@@ -1,238 +1,225 @@
-// Variables para el sintetizador de voz
-let speechSynthesis = window.speechSynthesis;
-let voiceActive = false;
+/**
+ * FitBot - Asistente Virtual FitZone
+ * chatbot.js
+ */
+(function () {
+    'use strict';
 
-// Elementos del DOM
-const toggleButton = document.getElementById('chat-toggle');
-const chatWindow = document.getElementById('chat-window');
-const chatBody = document.getElementById('chat-body');
-const userInput = document.getElementById('userInput');
-const voiceToggle = document.getElementById('voice-toggle');
-const closeButton = document.getElementById('close-chat');
-// URL de tu API del chatbot
-const API_URL = 'http://localhost:5000/chatbot';
+    /* ── Configuración ── */
+    const API_ENDPOINT = '/api/chatbot/message';
+    const SUGGESTIONS  = [
+        '💪 ¿Qué clases tienen?',
+        '⏰ ¿Cuáles son los horarios?',
+        '💳 ¿Cuánto cuesta la membresía?',
+        '📍 ¿Dónde están ubicados?',
+    ];
 
-// Evento para abrir/cerrar chat
-toggleButton.onclick = () => {
-    const visible = chatWindow.style.display === 'flex';
-    chatWindow.style.display = visible ? 'none' : 'flex';
-    
-    if (!visible) {
-        if (chatBody.innerHTML.trim() === '') {
-            welcomeBot();
-        }
-        
+    const WELCOME_MSG  =
+        '¡Hola! Soy **FitBot** 🤖💪, tu asistente oficial de FitZone.\n' +
+        '¿En qué puedo ayudarte hoy? Puedo informarte sobre horarios, clases, membresías y más.';
+
+    /* ── Helpers ── */
+    function now() {
+        return new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
     }
-};
-// Cerrar el chat
-closeButton.onclick = () => {
-    chatWindow.style.display = 'none';
-};
 
-// Activar/desactivar voz
-voiceToggle.onclick = () => {
-    voiceActive = !voiceActive;
-    voiceToggle.querySelector('i').classList.toggle('voice-active');
-    
-    if (voiceActive) {
-        // Mensaje para indicar que la voz está activada
-        appendMessage("He activado la lectura de voz para mis respuestas.", 'bot');
-        speakText("He activado la lectura de voz para mis respuestas.");
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Soporte mínimo de markdown: **bold** y saltos de línea
+    function renderMarkdown(text) {
+        return escapeHtml(text)
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+    }
+
+    /* ── Estado ── */
+    let isOpen     = false;
+    let isLoading  = false;
+    let badgeShown = false;
+
+    /* ── DOM ── */
+    const toggle      = document.getElementById('fitbot-toggle');
+    const window_     = document.getElementById('fitbot-window');
+    const messages    = document.getElementById('fitbot-messages');
+    const input       = document.getElementById('fitbot-input');
+    const sendBtn     = document.getElementById('fitbot-send');
+    const badge       = document.getElementById('fitbot-badge');
+    const suggestBox  = document.getElementById('fitbot-suggestions');
+
+    if (!toggle || !window_ || !messages || !input || !sendBtn) {
+        console.warn('FitBot: elementos del DOM no encontrados.');
+        return;
+    }
+
+    /* ── Inicialización ── */
+    function init() {
+        // Sugerencias rápidas
+        SUGGESTIONS.forEach(function(text) {
+            const btn = document.createElement('button');
+            btn.className   = 'fitbot-suggestion';
+            btn.textContent = text;
+            btn.addEventListener('click', function() { sendMessage(text); });
+            suggestBox.appendChild(btn);
+        });
+
+        // Mensaje de bienvenida (con pequeño delay)
+        setTimeout(function() {
+            appendMessage('bot', WELCOME_MSG);
+            if (!badgeShown) {
+                badge.style.opacity = '1';
+                badge.style.transform = 'scale(1)';
+                badgeShown = true;
+            }
+        }, 800);
+
+        // Eventos
+        toggle.addEventListener('click', toggleChat);
+
+        sendBtn.addEventListener('click', function() {
+            const msg = input.value.trim();
+            if (msg) sendMessage(msg);
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const msg = input.value.trim();
+                if (msg) sendMessage(msg);
+            }
+        });
+
+        // Auto-resize del input
+        input.addEventListener('input', function() {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+        });
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (isOpen && !window_.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+                closeChat();
+            }
+        });
+    }
+
+    /* ── Abrir / Cerrar ── */
+    function toggleChat() {
+        isOpen ? closeChat() : openChat();
+    }
+
+    function openChat() {
+        isOpen = true;
+        window_.classList.add('open');
+        toggle.classList.add('active');
+        badge.style.display = 'none';
+        setTimeout(function() { input.focus(); }, 350);
+        scrollToBottom();
+    }
+
+    function closeChat() {
+        isOpen = false;
+        window_.classList.remove('open');
+        toggle.classList.remove('active');
+    }
+
+    /* ── Mensajes ── */
+    function appendMessage(role, text) {
+        const wrap   = document.createElement('div');
+        wrap.className = 'fitbot-msg ' + role;
+
+        const bubble = document.createElement('div');
+        bubble.className = 'fitbot-msg-bubble';
+        bubble.innerHTML = renderMarkdown(text);
+
+        const time   = document.createElement('div');
+        time.className  = 'fitbot-msg-time';
+        time.textContent = now();
+
+        wrap.appendChild(bubble);
+        wrap.appendChild(time);
+        messages.appendChild(wrap);
+        scrollToBottom();
+        return wrap;
+    }
+
+    function showTyping() {
+        const wrap = document.createElement('div');
+        wrap.className = 'fitbot-msg bot';
+        wrap.id = 'fitbot-typing-indicator';
+
+        const typing = document.createElement('div');
+        typing.className = 'fitbot-typing';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+
+        wrap.appendChild(typing);
+        messages.appendChild(wrap);
+        scrollToBottom();
+    }
+
+    function removeTyping() {
+        const el = document.getElementById('fitbot-typing-indicator');
+        if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+        requestAnimationFrame(function() {
+            messages.scrollTop = messages.scrollHeight;
+        });
+    }
+
+    /* ── Envío al API ── */
+    function sendMessage(text) {
+        if (isLoading || !text) return;
+
+        // Mostrar mensaje del usuario
+        input.value = '';
+        input.style.height = 'auto';
+        appendMessage('user', text);
+
+        // Ocultar sugerencias tras primer uso
+        if (suggestBox && suggestBox.style.display !== 'none') {
+            suggestBox.style.display = 'none';
+        }
+
+        // Estado de carga
+        isLoading = true;
+        sendBtn.disabled = true;
+        showTyping();
+
+        fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text }),
+        })
+        .then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function(data) {
+            removeTyping();
+            appendMessage('bot', data.reply || 'Sin respuesta del servidor.');
+        })
+        .catch(function(err) {
+            removeTyping();
+            appendMessage('bot', '⚠️ No pude conectarme al servidor. Intenta de nuevo en un momento.');
+            console.error('FitBot error:', err);
+        })
+        .finally(function() {
+            isLoading = false;
+            sendBtn.disabled = false;
+            input.focus();
+        });
+    }
+
+    /* ── Arrancar ── */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        // Detener cualquier voz que esté reproduciéndose
-        speechSynthesis.cancel();
-        appendMessage("He desactivado la lectura de voz.", 'bot');
+        init();
     }
-};
 
-// Mensaje de bienvenida
-function welcomeBot() {
-    setTimeout(() => {
-        const welcomeMessage = "¡Hola! Soy tu asistente virtual de Fitzone 💪. ¿En qué puedo ayudarte hoy?";
-        typeEffect(welcomeMessage);
-    }, 1000);
-}
-
-// Enviar mensaje
-function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
-    
-    appendMessage(message, 'user');
-    userInput.value = '';
-    
-    // Mostrar indicador de "escribiendo..."
-    const typing = document.createElement('div');
-    typing.className = 'message bot typing';
-    typing.textContent = 'Escribiendo';
-    chatBody.appendChild(typing);
-    chatBody.scrollTop = chatBody.scrollHeight;
-    
-    // Conexión con tu API real
-    fetch(API_URL, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            // Aquí puedes agregar headers adicionales si los necesitas
-            // 'Authorization': 'Bearer tu-token'
-        },
-        body: JSON.stringify({ message })
-    })
-    .then(response => {
-        // Verificar si la respuesta fue exitosa
-        if (!response.ok) {
-            throw new Error('Error en la conexión con el servidor: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Respuesta de la API:', data);  // Ya lo tienes, bien hecho
-        
-        chatBody.removeChild(typing);
-    
-        // Verifica si `data.response` existe, si no prueba con otras
-        if (data && data.response) {
-            typeEffect(data.response);
-        } else if (data && data.reply) {
-            typeEffect(data.reply);
-        } else {
-            typeEffect("Lo siento, no pude procesar tu solicitud correctamente.");
-        }
-    })    
-    .catch(error => {
-        console.error('Error:', error);
-        chatBody.removeChild(typing);
-        typeEffect("Lo siento, hubo un problema al conectar con el servidor. Por favor, intenta de nuevo más tarde.");
-    });
-}
-
-// Añadir mensaje al chat
-function appendMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    messageDiv.textContent = text;
-    chatBody.appendChild(messageDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-// Efecto de escritura del bot - mejorado con velocidad variable
-function typeEffect(text) {
-    let i = 0;
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message bot';
-    chatBody.appendChild(messageDiv);
-    
-    // Velocidad de escritura variable basada en longitud del texto
-    const baseSpeed = 30;
-    const speed = text.length > 100 ? baseSpeed * 0.7 : baseSpeed;
-    
-    const typingInterval = setInterval(() => {
-        if (i < text.length) {
-            // Añadir carácter a carácter con efectos naturales
-            messageDiv.textContent += text.charAt(i);
-            i++;
-            
-            // Pausas aleatorias en puntuaciones para un efecto más natural
-            const currentChar = text.charAt(i);
-            if (['.', '!', '?', ',', ':'].includes(currentChar)) {
-                const pauseFactor = currentChar === '.' || currentChar === '!' || currentChar === '?' ? 8 : 3;
-                const pauseTime = speed * pauseFactor;
-                clearInterval(typingInterval);
-                setTimeout(() => {
-                    const newTypingInterval = setInterval(() => {
-                        if (i < text.length) {
-                            messageDiv.textContent += text.charAt(i);
-                            i++;
-                            chatBody.scrollTop = chatBody.scrollHeight;
-                        } else {
-                            clearInterval(newTypingInterval);
-                            if (voiceActive) {
-                                speakText(text);
-                            }
-                        }
-                    }, speed);
-                }, pauseTime);
-            }
-            
-            chatBody.scrollTop = chatBody.scrollHeight;
-        } else {
-            clearInterval(typingInterval);
-            
-            // Cuando termine de escribir, leer el mensaje si la voz está activada
-            if (voiceActive) {
-                speakText(text);
-            }
-        }
-    }, speed);
-}
-
-// Función para leer texto
-function speakText(text) {
-    // Eliminar emojis y caracteres especiales para la voz
-    const cleanText = text.replace(/[^\w\s.,;:¿?¡!]/gi, '');
-    
-    if (speechSynthesis) {
-        speechSynthesis.cancel(); // Detener cualquier voz previa
-        
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'es-ES';
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        
-        // Cargar voces y buscar una voz en español
-        let voices = speechSynthesis.getVoices();
-        
-        // Si las voces no están cargadas aún, esperar y volver a intentar
-        if (voices.length === 0) {
-            setTimeout(() => {
-                voices = speechSynthesis.getVoices();
-                const spanishVoice = voices.find(voice => voice.lang.includes('es'));
-                if (spanishVoice) {
-                    utterance.voice = spanishVoice;
-                }
-                speechSynthesis.speak(utterance);
-            }, 300);
-        } else {
-            const spanishVoice = voices.find(voice => voice.lang.includes('es'));
-            if (spanishVoice) {
-                utterance.voice = spanishVoice;
-            }
-            speechSynthesis.speak(utterance);
-        }
-    }
-}
-
-// Enviar mensaje con Enter
-userInput.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
-});
-
-// Manejar errores de red
-window.addEventListener('online', function() {
-    appendMessage("¡Conexión reestablecida! Puedes seguir consultando.", 'bot');
-});
-
-window.addEventListener('offline', function() {
-    appendMessage("Parece que no hay conexión a internet. Algunas funciones pueden no estar disponibles.", 'bot');
-});
-
-// Cargar voces disponibles
-window.addEventListener('load', function() {
-    // Cargar las voces disponibles
-    speechSynthesis.getVoices();
-    
-    // Algunas navegadores necesitan este evento para cargar las voces
-    speechSynthesis.onvoiceschanged = function() {
-        speechSynthesis.getVoices();
-    };
-});
-
-// Detectar cuando el usuario hace clic fuera del chat para cerrarlo (opcional)
-document.addEventListener('click', function(event) {
-    const isClickInsideChat = chatWindow.contains(event.target);
-    const isClickOnToggle = toggleButton.contains(event.target);
-    
-    if (!isClickInsideChat && !isClickOnToggle && chatWindow.style.display === 'flex') {
-        // chatWindow.style.display = 'none'; // Descomenta esta línea si quieres que el chat se cierre al hacer clic fuera
-    }
-});
+})();

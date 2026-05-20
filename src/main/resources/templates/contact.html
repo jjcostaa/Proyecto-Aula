@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -19,6 +19,8 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 
 <body class="bg-white">
@@ -193,6 +195,12 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script th:src="@{/js/navbar.js}"></script>
+
+    <!-- FitBot Widget -->
+    <div th:replace="~{fragments/chatbot :: chatbot-widget}"></div>
+
 </body>
 
 </html>
